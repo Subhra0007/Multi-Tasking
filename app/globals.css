@@ -8,10 +8,17 @@
 }
 
 .dark {
-  --background: #020617;
+  --background: #0F1014;
   --foreground: #e5e7eb;
   --primary: #0d9488;
   --secondary: #e11d48;
+}
+
+/* Smooth Transition for all theme changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
 @theme inline {
@@ -57,6 +64,7 @@ body {
     opacity: 0;
     transform: translateY(6px) scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -68,6 +76,7 @@ body {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+
   to {
     opacity: 0;
     transform: translateY(4px) scale(0.95);
@@ -82,7 +91,8 @@ body {
 
 /* Light mode scrollbar */
 ::-webkit-scrollbar-track {
-  background: #ffe4e6; /* soft rose to match light background */
+  background: #ffe4e6;
+  /* soft rose to match light background */
 }
 
 ::-webkit-scrollbar-thumb {

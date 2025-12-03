@@ -18,7 +18,6 @@ import {
   Link as LinkIcon,
   Wallet,
   Bookmark,
-  Star,
   Triangle
 } from 'lucide-react';
 
@@ -93,7 +92,6 @@ export default function Sidebar() {
                 : 'bg-white text-gray-900 border-rose-100 focus:border-rose-300 placeholder:text-gray-500 shadow-sm'
               }`}
           />
-          {/* <Star className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-400 h-4 w-4 fill-amber-400" /> */}
         </div>
       </div>
 

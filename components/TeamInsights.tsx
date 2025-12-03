@@ -5,7 +5,7 @@ import { TrendingUp, ChevronDown } from 'lucide-react';
 
 export default function TeamInsights() {
   return (
-    <div className="flex-1 bg-white dark:bg-[#0F1014] rounded-3xl p-6 border border-rose-200 dark:border-gray-800">
+    <div className="flex-1 bg-white dark:bg-[#0F1014] rounded-3xl p-6 border border-rose-200 dark:border-gray-800 transition-colors duration-300">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <h3 className="text-gray-900 dark:text-white font-semibold text-lg">Team Insights</h3>
@@ -50,13 +50,13 @@ export default function TeamInsights() {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#f472b6]"></div>
-                <span className="text-gray-400 text-sm">Proggres</span>
-                <span className="text-gray-600 text-sm ml-auto">2</span>
+                <span className="text-gray-600 dark:text-gray-400 text-sm">Proggres</span>
+                <span className="text-gray-600 dark:text-gray-500 text-sm ml-auto">2</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#10b981]"></div>
-                <span className="text-gray-400 text-sm">Completed</span>
-                <span className="text-gray-600 text-sm ml-auto">5</span>
+                <span className="text-gray-600 dark:text-gray-400 text-sm">Completed</span>
+                <span className="text-gray-600 dark:text-gray-500 text-sm ml-auto">5</span>
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@ export default function TeamInsights() {
             </div>
             {/* T */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <div className="w-1.5 h-20 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-20 bg-gray-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/2 bg-[#f472b6]"></div>
                 <div className="absolute bottom-1/2 w-full h-1/4 bg-[#10b981]"></div>
               </div>
@@ -92,7 +92,7 @@ export default function TeamInsights() {
               <div className="absolute -top-8 bg-[#6366f1] text-white text-[10px] px-2 py-0.5 rounded-md">
                 Today
               </div>
-              <div className="w-1.5 h-32 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-32 bg-gray-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/3 bg-[#6366f1]"></div>
                 <div className="absolute bottom-1/3 w-full h-1/3 bg-[#10b981]"></div>
                 <div className="absolute bottom-2/3 w-full h-1/6 bg-[#f472b6]"></div>
@@ -101,14 +101,14 @@ export default function TeamInsights() {
             </div>
             {/* T */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <div className="w-1.5 h-16 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-16 bg-gray-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/2 bg-[#10b981]"></div>
               </div>
               <span className="text-gray-500 text-xs">T</span>
             </div>
             {/* F */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <div className="w-1.5 h-24 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-24 bg-gray-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/4 bg-[#f472b6]"></div>
                 <div className="absolute bottom-1/4 w-full h-1/4 bg-[#6366f1]"></div>
               </div>
@@ -116,14 +116,14 @@ export default function TeamInsights() {
             </div>
             {/* S */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <div className="w-1.5 h-10 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-10 bg-gray-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/2 bg-[#f472b6]"></div>
               </div>
               <span className="text-gray-500 text-xs">S</span>
             </div>
             {/* S */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <div className="w-1.5 h-14 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-14 bg-gray-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/3 bg-[#10b981]"></div>
               </div>
               <span className="text-gray-500 text-xs">S</span>

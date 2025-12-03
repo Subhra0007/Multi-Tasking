@@ -6,7 +6,7 @@ import { SlidersHorizontal, Pencil, Upload, Type, Settings, Image, Trash2, Plus 
 export default function FiltersBar() {
   return (
     <div className="px-6 py-4">
-      <div className="flex items-center justify-between bg-white dark:bg-[#0F1014] rounded-2xl p-2 border border-rose-200 dark:border-gray-800">
+      <div className="flex items-center justify-between bg-white dark:bg-[#0F1014] rounded-2xl p-2 border border-rose-200 dark:border-gray-800 transition-colors duration-300">
         {/* Left Section */}
         <div className="flex items-center gap-6 pl-2">
           <button className="flex items-center gap-3 px-4 py-2 rounded-xl bg-rose-100 dark:bg-[#1F2125] text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
@@ -31,17 +31,17 @@ export default function FiltersBar() {
         </div>
 
         {/* Center Section - Tools */}
-        <div className="flex items-center gap-1 bg-rose-100 dark:bg-[#1F2125] p-1 rounded-xl border border-rose-200 dark:border-gray-800">
+        <div className="flex items-center gap-1 bg-rose-100 dark:bg-[#1F2125] p-1 rounded-xl border border-rose-200 dark:border-gray-800 transition-colors">
           <button className="p-2 text-gray-900 dark:text-white bg-rose-200 dark:bg-[#2C2E33] rounded-lg hover:bg-rose-300 dark:hover:bg-gray-700 transition-colors">
             <Pencil size={18} />
           </button>
           <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-rose-200 dark:hover:bg-[#2C2E33] rounded-lg transition-colors">
             <Upload size={18} />
           </button>
-          <button className="p-2 text-gray-400 hover:text-white hover:bg-[#2C2E33] rounded-lg transition-colors">
+          <button className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-rose-200 dark:hover:bg-[#2C2E33] rounded-lg transition-colors">
             <Type size={18} />
           </button>
-          <button className="p-2 text-gray-400 hover:text-white hover:bg-[#2C2E33] rounded-lg transition-colors">
+          <button className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-rose-200 dark:hover:bg-[#2C2E33] rounded-lg transition-colors">
             <Settings size={18} />
           </button>
         </div>
@@ -55,7 +55,7 @@ export default function FiltersBar() {
 
           <div className="w-px h-6 bg-rose-300 dark:bg-gray-800"></div>
 
-          <button className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+          <button className="flex items-center gap-2 text-gray-400 hover:text-red-500 transition-colors">
             <Trash2 size={18} />
             <span className="text-sm">Deleted</span>
             <span className="bg-red-100 dark:bg-[#2C2E33] text-red-600 dark:text-red-400 text-xs px-2 py-0.5 rounded-full ml-1">4</span>

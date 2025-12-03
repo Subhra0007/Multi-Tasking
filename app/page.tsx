@@ -25,7 +25,7 @@ export default function Home() {
         <Header />
 
         {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto bg-background dark:bg-[#0F1014]">
+        <div className="flex-1 overflow-y-auto bg-background">
           {/* Calendar View */}
           <CalendarView />
 
