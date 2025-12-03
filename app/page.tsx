@@ -4,6 +4,14 @@ import CalendarView from '@/components/CalendarView';
 import FiltersBar from '@/components/FiltersBar';
 import LastProjects from '@/components/LastProjects';
 import TeamInsights from '@/components/TeamInsights';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export default function Home() {
   return (
@@ -17,7 +25,7 @@ export default function Home() {
         <Header />
 
         {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto bg-[#0F1014]">
+        <div className="flex-1 overflow-y-auto bg-background dark:bg-[#0F1014]">
           {/* Calendar View */}
           <CalendarView />
 

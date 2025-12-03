@@ -80,15 +80,29 @@ body {
   height: 8px;
 }
 
+/* Light mode scrollbar */
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #ffe4e6; /* soft rose to match light background */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #fecaca;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: #fca5a5;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #333;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #444;
 }

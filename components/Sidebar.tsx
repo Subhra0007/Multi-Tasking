@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import {
   ChevronDown,
   LayoutGrid,
@@ -22,23 +23,21 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar() {
-  const [isDark, setIsDark] = useState(true);
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check local storage or system preference on mount
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    // Default to dark if no preference, or respect stored/system
-    const initialDark = stored === 'dark' || (!stored && prefersDark);
-
-    setIsDark(initialDark);
-    document.documentElement.classList.toggle('dark', initialDark);
+    setMounted(true);
   }, []);
 
+  if (!mounted) {
+    return null;
+  }
+
+  const isDark = resolvedTheme === 'dark';
+
   const setGlobalTheme = (dark: boolean) => {
-    setIsDark(dark);
-    document.documentElement.classList.toggle('dark', dark);
-    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    setTheme(dark ? 'dark' : 'light');
   };
 
   // Helper variables for dynamic styles
@@ -94,7 +93,7 @@ export default function Sidebar() {
                 : 'bg-white text-gray-900 border-rose-100 focus:border-rose-300 placeholder:text-gray-500 shadow-sm'
               }`}
           />
-          <Star className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-400 h-4 w-4 fill-amber-400" />
+          {/* <Star className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-400 h-4 w-4 fill-amber-400" /> */}
         </div>
       </div>
 
@@ -110,10 +109,10 @@ export default function Sidebar() {
         </div>
 
         {/* Project Board */}
-        <div className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] p-[1px]">
+        <div className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-teal-600 to-rose-600 p-[1px]">
           <div className={`relative flex items-center gap-3 px-4 py-3 group-hover:bg-opacity-90 transition-all rounded-[11px] z-10 h-full 
             ${isDark ? 'bg-[#0F1014]' : 'bg-white'}`}>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] opacity-100 z-[-1]"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 opacity-100 z-[-1]"></div>
             <Folder size={20} className="text-white fill-white/20" />
             <span className="text-white font-medium">Project Board</span>
             <ChevronDown className="ml-auto h-4 w-4 text-white rotate-180" />
@@ -135,8 +134,8 @@ export default function Sidebar() {
 
             {/* Tree Parent: Team Project */}
             <div className="relative pt-1">
-              <div className="flex items-center gap-3 pl-6 py-2 text-blue-500 font-bold cursor-pointer">
-                <div className="w-2.5 h-2.5 rounded-full border-2 border-blue-500"></div>
+              <div className="flex items-center gap-3 pl-6 py-2 text-teal-600 font-bold cursor-pointer">
+                <div className="w-2.5 h-2.5 rounded-full border-2 border-teal-500"></div>
                 <span className="text-sm">Team Project</span>
               </div>
 
@@ -175,7 +174,7 @@ export default function Sidebar() {
             </div>
 
             {/* Create New Board */}
-            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 ${isDark ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-800'}`}>
+            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 text-teal-600 ${isDark ? 'text-teal-600 hover:text-teal-500' : 'text-teal-600 hover:text-teal-800'}`}>
               <Plus size={16} />
               <span className="text-sm font-bold">Create New Board</span>
             </div>
@@ -208,7 +207,7 @@ export default function Sidebar() {
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <div className={`w-5 h-5 rounded-full bg-purple-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
-                <div className={`w-5 h-5 rounded-full bg-blue-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
+                <div className={`w-5 h-5 rounded-full bg-teal-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
               </div>
               <span className={`text-[10px] font-bold ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
             </div>
@@ -254,7 +253,7 @@ export default function Sidebar() {
             ? 'border-gray-700 bg-gradient-to-b from-white/5 to-transparent hover:border-gray-500'
             : 'border-rose-300 bg-white hover:border-rose-400 hover:bg-rose-50/50'
           }`}>
-          <div className="w-12 h-12 bg-[#6366f1] rounded-full flex items-center justify-center mx-auto mb-3 text-white shadow-lg shadow-indigo-500/20">
+          <div className="w-12 h-12 bg-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 text-white shadow-lg shadow-indigo-500/20">
             <Plus size={24} />
           </div>
           <h3 className={`font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Add New Project</h3>

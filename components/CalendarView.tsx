@@ -16,18 +16,18 @@ export default function CalendarView() {
   return (
     <div className="flex-1 overflow-x-auto">
       {/* View Controls */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-[color-mix(in_oklab,var(--background),black_70%)] text-foreground">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-rose-200 dark:border-[color-mix(in_oklab,var(--background),black_70%)] text-foreground">
 
         {/* Left: View Toggles */}
-        <div className="flex items-center gap-1 bg-[#1F2125] p-1 rounded-xl border border-gray-800">
-          <button className="px-6 py-2 text-sm bg-[#2C2E33] text-white rounded-lg shadow-sm font-medium">Card</button>
-          <button className="px-6 py-2 text-sm text-gray-400 hover:text-white transition-colors">Blocks</button>
-          <button className="px-6 py-2 text-sm text-gray-400 hover:text-white transition-colors">Table</button>
+        <div className="flex items-center gap-1 bg-white dark:bg-[#1F2125] p-1 rounded-xl border border-rose-200 dark:border-gray-800">
+          <button className="px-6 py-2 text-sm bg-rose-100 dark:bg-[#2C2E33] text-gray-900 dark:text-white rounded-lg shadow-sm font-medium">Card</button>
+          <button className="px-6 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Blocks</button>
+          <button className="px-6 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">Table</button>
         </div>
 
         {/* Center/Right: Filters & Date */}
         <div className="flex items-center gap-6">
-          <select className="text-sm px-4 py-2.5 rounded-xl bg-[#1F2125] text-gray-300 border border-gray-800 outline-none cursor-pointer hover:border-gray-700 transition-colors">
+          <select className="text-sm px-4 py-2.5 rounded-xl bg-white dark:bg-[#1F2125] text-gray-700 dark:text-gray-300 border border-rose-200 dark:border-gray-800 outline-none cursor-pointer hover:border-rose-300 dark:hover:border-gray-700 transition-colors">
             <option>1 Weeks</option>
           </select>
 
@@ -35,16 +35,16 @@ export default function CalendarView() {
             <div className="flex items-center gap-2 text-xs text-blue-400">
               <Pencil size={12} />
               <span>30 minutes ago</span>
-              <div className="flex items-center gap-1 text-gray-400">
-                <div className="w-5 h-5 rounded-full bg-pink-500 border border-[#0F1014]"></div>
+              <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                <div className="w-5 h-5 rounded-full bg-pink-500 border border-white dark:border-[#0F1014]"></div>
                 <span>Sarah</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-gray-200">
-              <button className="hover:text-white cursor-pointer transition"><ChevronLeft size={20} /></button>
+            <div className="flex items-center gap-4 text-gray-900 dark:text-gray-200">
+              <button className="hover:text-gray-600 dark:hover:text-white cursor-pointer transition"><ChevronLeft size={20} /></button>
               <span className="text-xl font-semibold">June, 2023</span>
-              <button className="hover:text-white cursor-pointer transition"><ChevronRight size={20} /></button>
+              <button className="hover:text-gray-600 dark:hover:text-white cursor-pointer transition"><ChevronRight size={20} /></button>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function CalendarView() {
           {/* Time Column */}
           <div className="w-20 flex flex-col pt-8">
             {timeSlots.map((time) => (
-              <div key={time} className="h-24 text-xs text-gray-500 border-b border-gray-800">
+              <div key={time} className="h-24 text-xs text-gray-500 border-b border-rose-200 dark:border-gray-800">
                 {time}
               </div>
             ))}
@@ -65,9 +65,9 @@ export default function CalendarView() {
           {/* Days Columns */}
           {days.map((day, dayIndex) => (
             <div key={day.name} className="flex-1 min-w-[200px]">
-              <div className="text-center mb-4 pb-2 border-b border-[color-mix(in_oklab,var(--background),black_70%)]">
-                <div className="text-gray-400 text-xs">{day.full}</div>
-                <div className="font-semibold">{day.date}/{day.name}</div>
+              <div className="text-center mb-4 pb-2 border-b border-rose-200 dark:border-[color-mix(in_oklab,var(--background),black_70%)]">
+                <div className="text-gray-500 dark:text-gray-400 text-xs">{day.full}</div>
+                <div className="font-semibold text-gray-900 dark:text-gray-100">{day.date}/{day.name}</div>
               </div>
 
               <div className="relative">
@@ -75,12 +75,12 @@ export default function CalendarView() {
                 {timeSlots.map((time, timeIndex) => (
                   <div
                     key={time}
-                    className="h-24 border-b border-[color-mix(in_oklab,var(--background),black_70%)] relative"
+                    className="h-24 border-b border-rose-200 dark:border-[color-mix(in_oklab,var(--background),black_70%)] relative"
                   >
                     {/* Tasks */}
                     {dayIndex === 0 && timeIndex === 0 && (
                       <div className="absolute top-0 left-0 right-0 bg-gradient-to-br from-yellow-500/10 to-yellow-600/20 border border-yellow-500/30 backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_20px_rgba(234,179,8,0.2)] hover:border-yellow-500/50 transition-all duration-300 rounded-xl p-3 text-xs group" style={{ height: '96px' }}>
-                        <div className="text-white font-semibold mb-1 group-hover:text-yellow-400 transition-colors">Design System Team Meeting</div>
+                        <div className="text-gray-900 dark:text-white font-semibold mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">Design System Team Meeting</div>
                         <div className="flex items-center gap-1 mb-2">
                           <div className="flex -space-x-1">
                             <div className="w-4 h-4 rounded-full bg-purple-500 border border-[#1F2125]"></div>
@@ -98,7 +98,7 @@ export default function CalendarView() {
 
                     {dayIndex === 0 && timeIndex === 2 && (
                       <div className="absolute top-0 left-0 right-0 bg-gradient-to-br from-blue-500/10 to-blue-600/20 border border-blue-500/30 backdrop-blur-md shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:border-blue-500/50 transition-all duration-300 rounded-xl p-3 text-xs group flex flex-col" style={{ height: '192px' }}>
-                        <div className="text-white font-semibold mb-2 group-hover:text-blue-400 transition-colors">Wireframe SmartHome App</div>
+                        <div className="text-gray-900 dark:text-white font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Wireframe SmartHome App</div>
                         <div className="flex items-center gap-2 mb-2 bg-blue-500/10 p-1.5 rounded-lg border border-blue-500/20">
                           <FileText size={12} className="text-blue-400" />
                           <span className="text-blue-300 text-[10px]">Project Brief Doc</span>
@@ -113,7 +113,7 @@ export default function CalendarView() {
 
                     {dayIndex === 1 && timeIndex === 0 && (
                       <div className="absolute top-0 left-0 right-0 bg-gradient-to-br from-purple-500/10 to-purple-600/20 border border-purple-500/30 backdrop-blur-md shadow-[0_0_15px_rgba(168,85,247,0.1)] hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:border-purple-500/50 transition-all duration-300 rounded-xl p-3 text-xs group flex flex-col" style={{ height: '288px' }}>
-                        <div className="text-white font-semibold mb-2 group-hover:text-purple-400 transition-colors">3d Design Orzano Cotton</div>
+                        <div className="text-gray-900 dark:text-white font-semibold mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">3d Design Orzano Cotton</div>
                         <div className="w-full h-24 bg-gradient-to-br from-teal-400 via-purple-500 to-rose-500 rounded-lg mb-3 shadow-inner"></div>
                         <div className="flex -space-x-1 mb-3">
                           <div className="w-5 h-5 rounded-full bg-purple-500 border border-[#1F2125]"></div>
@@ -146,7 +146,7 @@ export default function CalendarView() {
 
                     {dayIndex === 3 && timeIndex === 0 && (
                       <div className="absolute top-0 left-0 right-0 bg-gradient-to-br from-pink-500/10 to-pink-600/20 border border-pink-500/30 backdrop-blur-md shadow-[0_0_15px_rgba(236,72,153,0.1)] hover:shadow-[0_0_20px_rgba(236,72,153,0.2)] hover:border-pink-500/50 transition-all duration-300 rounded-xl p-3 text-xs group flex flex-col" style={{ height: '192px' }}>
-                        <div className="text-white font-semibold mb-2 group-hover:text-pink-400 transition-colors">Redesign Edu Web</div>
+                        <div className="text-gray-900 dark:text-white font-semibold mb-2 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">Redesign Edu Web</div>
                         <div className="flex justify-between text-gray-400 text-[10px] mb-1">
                           <span>Complete: 3/5</span>
                           <span className="text-pink-400">60%</span>

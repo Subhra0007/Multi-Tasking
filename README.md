@@ -18,7 +18,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses:
+
+- Tailwind CSS v4 with a minimal design token setup in `app/globals.css` and `tailwind.config.ts`.
+- [shadcn/ui](https://ui.shadcn.com) style components under `components/ui` (for example `button`, `dropdown-menu`, and `card`) built on top of Tailwind.
+- Radix UI primitives such as `@radix-ui/react-accordion`, `@radix-ui/react-dropdown-menu`, and others used inside the shadcn-style components.
+
+To generate more shadcn/ui components, adjust `components.json` and run the `shadcn` CLI as described in the official docs.
 
 ## Learn More
 

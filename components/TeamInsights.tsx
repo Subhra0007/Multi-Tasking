@@ -5,10 +5,10 @@ import { TrendingUp, ChevronDown } from 'lucide-react';
 
 export default function TeamInsights() {
   return (
-    <div className="flex-1 bg-[#0F1014] rounded-3xl p-6 border border-gray-800">
+    <div className="flex-1 bg-white dark:bg-[#0F1014] rounded-3xl p-6 border border-rose-200 dark:border-gray-800">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <h3 className="text-white font-semibold text-lg">Team Insights</h3>
+          <h3 className="text-gray-900 dark:text-white font-semibold text-lg">Team Insights</h3>
           <div className="flex items-center text-[#4ade80] text-sm font-medium gap-1">
             <TrendingUp size={16} />
             <span>+19,24</span>
@@ -23,10 +23,10 @@ export default function TeamInsights() {
           {/* Time Spent */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Time Spent</span>
+              <span className="text-gray-600 dark:text-gray-400 text-sm">Time Spent</span>
             </div>
             <div className="flex items-baseline gap-3">
-              <span className="text-white text-2xl font-semibold">9h</span>
+              <span className="text-gray-900 dark:text-white text-2xl font-semibold">9h</span>
               <span className="bg-[#6366f1]/20 text-[#818cf8] text-xs px-2 py-0.5 rounded-full">78%</span>
             </div>
           </div>
@@ -34,10 +34,10 @@ export default function TeamInsights() {
           {/* Tasks */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Tasks</span>
+              <span className="text-gray-600 dark:text-gray-400 text-sm">Tasks</span>
             </div>
             <div className="flex items-baseline gap-3 mb-4">
-              <span className="text-white text-2xl font-semibold">10</span>
+              <span className="text-gray-900 dark:text-white text-2xl font-semibold">10</span>
               <span className="bg-[#6366f1]/20 text-[#818cf8] text-xs px-2 py-0.5 rounded-full">68%</span>
             </div>
 
@@ -45,8 +45,8 @@ export default function TeamInsights() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#6366f1]"></div>
-                <span className="text-gray-400 text-sm">Doing</span>
-                <span className="text-gray-600 text-sm ml-auto">3</span>
+                <span className="text-gray-600 dark:text-gray-400 text-sm">Doing</span>
+                <span className="text-gray-500 dark:text-gray-600 text-sm ml-auto">3</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#f472b6]"></div>
@@ -65,7 +65,7 @@ export default function TeamInsights() {
         {/* Right Column: Chart */}
         <div className="relative">
           <div className="flex justify-end mb-4">
-            <button className="flex items-center gap-1 text-gray-400 text-sm hover:text-white">
+            <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 text-sm hover:text-gray-900 dark:hover:text-white">
               Days
               <ChevronDown size={14} />
             </button>
@@ -74,7 +74,7 @@ export default function TeamInsights() {
           <div className="flex items-end justify-between h-40 gap-2">
             {/* M */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <div className="w-1.5 h-12 bg-gray-800 rounded-full relative overflow-hidden">
+              <div className="w-1.5 h-12 bg-rose-200 dark:bg-gray-800 rounded-full relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-1/3 bg-[#6366f1]"></div>
               </div>
               <span className="text-gray-500 text-xs">M</span>
@@ -97,7 +97,7 @@ export default function TeamInsights() {
                 <div className="absolute bottom-1/3 w-full h-1/3 bg-[#10b981]"></div>
                 <div className="absolute bottom-2/3 w-full h-1/6 bg-[#f472b6]"></div>
               </div>
-              <span className="text-white text-xs font-medium">W</span>
+              <span className="text-gray-900 dark:text-white text-xs font-medium">W</span>
             </div>
             {/* T */}
             <div className="flex flex-col items-center gap-2 w-full">
@@ -143,4 +143,3 @@ export default function TeamInsights() {
     </div>
   );
 }
-
