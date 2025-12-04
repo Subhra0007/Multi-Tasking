@@ -26,7 +26,7 @@ export default function Header() {
 
   return (
     <div className={`px-6 py-4 transition-colors duration-400 border-b
-      ${isDark ? 'bg-[#0F1014] border-gray-800' : 'bg-rose-50 border-rose-200'}`}>
+      ${isDark ? 'bg-slate-950 border-gray-800' : 'bg-teal-50 border-teal-200'}`}>
       <div className="flex items-center justify-between flex-wrap gap-4">
 
         {/* Left Section - Project Info */}

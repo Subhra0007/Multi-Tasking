@@ -1,8 +1,8 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   ChevronDown,
   LayoutGrid,
@@ -28,12 +28,22 @@ import {
 
 // --- TYPE DEFINITIONS FOR TYPE SAFETY ---
 
-type MenuName = 'dashboard' | 'project-board' | 'task-board' | 'schedule' | 'activities' | 'inbox' | null;
+type MenuName =
+  | 'dashboard'
+  | 'project-board'
+  | 'task-board'
+  | 'schedule'
+  | 'activities'
+  | 'inbox'
+  | 'template'
+  | 'market-places'
+  | null;
 
 interface TaskSubMenu {
   name: string;
   icon: React.ReactNode;
   count: number | null;
+  subItems?: { name: string; icon?: React.ReactNode }[];
 }
 
 // --- TYPEWRITER ANIMATION COMPONENT (TypeScript) ---
@@ -76,18 +86,26 @@ const Typewriter: React.FC<TypewriterProps> = ({ text, speed = 150 }) => {
 interface SidebarProps {
   view: string;
   setView: (view: string) => void;
+  activeMenu?: MenuName;
 }
 
-export default function Sidebar({ view, setView }: SidebarProps) {
+export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
   const { setTheme, resolvedTheme } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState<boolean>(false);
-
-  const [expandedMenu, setExpandedMenu] = useState<MenuName>('task-board');
+  const [expandedMenu, setExpandedMenu] = useState<MenuName>(activeMenu === 'project-board' ? 'project-board' : 'task-board');
   // const [activeMenu, setActiveMenu] = useState<MenuName>('task-board'); // Removed local state 
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (activeMenu === 'project-board') {
+      setExpandedMenu('project-board');
+    }
+  }, [activeMenu]);
 
   if (!mounted) {
     return null;
@@ -99,9 +117,19 @@ export default function Sidebar({ view, setView }: SidebarProps) {
     setTheme(dark ? 'dark' : 'light');
   };
 
+  const navigateTo = (path: string) => {
+    if (pathname !== path) {
+      router.push(path);
+    }
+  };
+
   const toggleMenu = (menu: MenuName) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
+
+  const isDashboardActive = activeMenu === 'dashboard' || view === 'Dashboard';
+  const isProjectBoardActive = activeMenu === 'project-board' || view === 'project-board' || view === 'Board';
+  const isTaskBoardActive = activeMenu === 'task-board' || view === 'task-board' || view === 'Board';
 
   // Helper variables for dynamic styles
   const hoverClass: string = isDark ? 'hover:bg-white/5' : 'hover:bg-rose-200/50';
@@ -109,10 +137,24 @@ export default function Sidebar({ view, setView }: SidebarProps) {
   const borderClass: string = isDark ? 'border-gray-800' : 'border-rose-200';
 
   const taskBoardSubMenus: TaskSubMenu[] = [
-    { name: 'Template', icon: <Layout size={10} className="text-purple-500 fill-purple-500" />, count: null },
-    { name: 'Market Places', icon: <Store size={10} className="text-blue-500 fill-blue-500" />, count: null },
-    { name: 'Notes', icon: <Notebook size={10} className="text-teal-500 fill-teal-500" />, count: null },
-    { name: 'Todo List', icon: <ListChecks size={10} className="text-amber-500 fill-amber-500" />, count: 7 },
+    {
+      name: 'Notes',
+      icon: <Notebook size={10} className="text-teal-500 fill-teal-500" />,
+      count: null,
+      subItems: [
+        { name: 'Daily', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> },
+        { name: 'Weekly', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> }
+      ]
+    },
+    {
+      name: 'Todo List',
+      icon: <ListChecks size={10} className="text-amber-500 fill-amber-500" />,
+      count: 7,
+      subItems: [
+        { name: 'Work', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> },
+        { name: 'Personal', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> }
+      ]
+    },
   ];
 
   // --- NEW RADIX-STYLE ANIMATION COMPONENT WRAPPER ---
@@ -189,15 +231,18 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           {/* Dashboard */}
           <div
             className="relative cursor-pointer group rounded-xl overflow-hidden"
-            onClick={() => setView('Dashboard')}
+            onClick={() => {
+              setView('Dashboard');
+              navigateTo('/');
+            }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-              ${view === 'Dashboard' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+              ${isDashboardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center gap-3 px-4 py-2 transition-colors
-              ${view === 'Dashboard'
+              ${isDashboardActive
                   ? 'text-white'
                   : isDark ? 'text-gray-400' : 'text-gray-700'}`}
             >
@@ -211,23 +256,27 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           <div
             className="group relative overflow-hidden rounded-xl cursor-pointer"
             onClick={() => {
-              // setActiveMenu('project-board'); // Removed local state set
-              toggleMenu('project-board');
+              setView('Board');
+              navigateTo('/project-board');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-              ${view === 'project-board' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+              ${isProjectBoardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center gap-3 px-4 py-2 rounded-[11px] transition-colors
-              ${view === 'project-board' // Using view prop for active state check (optional, or keep local if it's just sidebar state)
+              ${isProjectBoardActive // Using view prop for active state check (optional, or keep local if it's just sidebar state)
                   ? 'text-white'
                   : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <Folder size={20} className={view === 'project-board' ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              <Folder size={20} className={isProjectBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
               <span className="font-normal">Project Board</span>
               <ChevronDown
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleMenu('project-board');
+                }}
                 className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'project-board' ? 'rotate-180' : ''}`}
               />
             </div>
@@ -301,23 +350,27 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           <div
             className="group relative overflow-hidden rounded-xl cursor-pointer"
             onClick={() => {
-              setView('task-board');
-              toggleMenu('task-board');
+              setView('Board');
+              navigateTo('/task-board');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-              ${view === 'task-board' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+              ${isTaskBoardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center gap-3 px-4 py-2 rounded-[11px] transition-colors
-              ${view === 'task-board'
+              ${isTaskBoardActive
                   ? 'text-white'
                   : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <FileText size={20} className={view === 'task-board' ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              <FileText size={20} className={isTaskBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
               <span className="font-normal">Task Board</span>
               <ChevronDown
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleMenu('task-board');
+                }}
                 className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'task-board' ? 'rotate-180' : ''}`}
               />
             </div>
@@ -329,19 +382,39 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           <div className={`border-l space-y-1 ${borderClass}`}>
 
             {taskBoardSubMenus.map((item) => (
-              <div key={item.name} className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
-                {/* Custom icon from the map, styled similarly to the dots */}
-                <div className="w-2.5 h-2.5 flex items-center justify-center">
-                  {item.icon}
+              <div key={item.name}>
+                <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
+                  {/* Custom icon from the map, styled similarly to the dots */}
+                  <div className="w-2.5 h-2.5 flex items-center justify-center">
+                    {item.icon}
+                  </div>
+
+                  <span className="text-sm font-medium">{item.name}</span>
+
+                  {/* Count badge, only render if count exists */}
+                  {item.count && (
+                    <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>
+                      {item.count}
+                    </span>
+                  )}
                 </div>
 
-                <span className="text-sm font-medium">{item.name}</span>
+                {/* Submenus rendering */}
+                {item.subItems && (
+                  <div className="relative ml-6 mt-1 space-y-0">
+                    {item.subItems.map((sub, idx, arr) => (
+                      <div key={idx} className="relative flex items-center pl-6 py-2 group cursor-pointer">
+                        {/* Vertical Line - Darker in light mode */}
+                        {idx !== arr.length - 1 && (
+                          <div className={`absolute left-[3px] top-0 h-full w-[1px] ${isDark ? 'bg-gray-700' : 'bg-gray-400'}`}></div>
+                        )}
+                        {/* Curved Connector - Darker in light mode */}
+                        <div className={`absolute left-[3px] top-0 w-4 h-[50%] border-b border-l rounded-bl-lg ${isDark ? 'border-gray-700' : 'border-gray-400'}`}></div>
 
-                {/* Count badge, only render if count exists */}
-                {item.count && (
-                  <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>
-                    {item.count}
-                  </span>
+                        <span className={`text-sm font-medium transition-colors ${isDark ? 'text-gray-500 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-900'}`}>{sub.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             ))}
@@ -355,12 +428,15 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           </div>
         </RadixMenuWrapper>
 
-        {/* Schedule & Activities */}
+        {/* Schedule, Activities, Inbox, Template, Market Places */}
         <div className="space-y-2"> {/* space-y-1 -> space-y-2 for consistent gap */}
           {/* Schedule */}
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
-            onClick={() => setView('schedule')}
+            onClick={() => {
+              setView('schedule');
+              navigateTo('/schedule');
+            }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
@@ -383,7 +459,10 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           {/* Activities */}
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
-            onClick={() => setView('activities')}
+            onClick={() => {
+              setView('activities');
+              navigateTo('/activities');
+            }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
@@ -408,7 +487,10 @@ export default function Sidebar({ view, setView }: SidebarProps) {
           {/* Inbox */}
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
-            onClick={() => setView('inbox')}
+            onClick={() => {
+              setView('inbox');
+              navigateTo('/inbox');
+            }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
@@ -431,6 +513,68 @@ export default function Sidebar({ view, setView }: SidebarProps) {
                 </div>
                 <span className={`text-[10px] font-bold ${view === 'inbox' ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
               </div>
+            </div>
+          </div>
+
+          {/* Template */}
+          <div
+            className="relative cursor-pointer group rounded-lg overflow-hidden"
+            onClick={() => {
+              setView('template');
+              navigateTo('/template');
+            }}
+          >
+            <div
+              className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
+                ${view === 'template' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+            />
+            <div
+              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+                ${view === 'template'
+                  ? 'text-white'
+                  : textMuted}`}
+            >
+              <div className="flex items-center gap-3">
+                <Layout size={20} />
+                <span className="text-base font-normal">Template</span>
+              </div>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
+                ${view === 'template'
+                  ? 'bg-white/20 text-white'
+                  : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                12
+              </span>
+            </div>
+          </div>
+
+          {/* Market Places */}
+          <div
+            className="relative cursor-pointer group rounded-lg overflow-hidden"
+            onClick={() => {
+              setView('market-places');
+              navigateTo('/market-places');
+            }}
+          >
+            <div
+              className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
+                ${view === 'market-places' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+            />
+            <div
+              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+                ${view === 'market-places'
+                  ? 'text-white'
+                  : textMuted}`}
+            >
+              <div className="flex items-center gap-3">
+                <Store size={20} />
+                <span className="text-base font-normal">Market Places</span>
+              </div>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
+                ${view === 'market-places'
+                  ? 'bg-white/20 text-white'
+                  : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                5
+              </span>
             </div>
           </div>
         </div>

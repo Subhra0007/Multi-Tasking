@@ -7,6 +7,10 @@ import BoardView from '@/components/BoardView';
 import TimelineView from '@/components/TimelineView';
 import TableView from '@/components/TableView';
 import DashboardView from '@/components/DashboardView';
+import ActivitiesView from '@/components/ActivitiesView';
+import InboxView from '@/components/InboxView';
+import MarketPlacesView from '@/components/MarketPlacesView';
+import TemplateView from '@/components/TemplateView';
 
 // 💡 DND Imports
 import {
@@ -326,139 +330,149 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
             onDragCancel={handleDragCancel}
         >
             <div className="flex-1 overflow-x-auto">
-                {/* View Controls (Unchanged) */}
-                <div className={`flex items-center justify-between px-6 py-4 border-b transition-colors duration-300
-                    ${isDark ? 'border-[color-mix(in_oklab,var(--background),black_70%)] text-foreground' : 'border-rose-200 text-gray-900'}`}>
-                    <div className={`flex items-center gap-1 p-1 rounded-xl border transition-colors
-                        ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-200'}`}>
-                        <button
-                            className={`px-6 py-2 text-sm rounded-xl shadow-sm font-medium transition-colors
-                            ${view === 'Card' ? isDark ? 'bg-[#2C2E33] text-white' : 'bg-rose-100 text-gray-900' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                            onClick={() => setView('Card')}
-                        >
-                            Card
-                        </button>
-                        <button
-                            className={`px-6 py-2 text-sm transition-colors rounded-xl
-                            ${view === 'Timeline' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                            onClick={() => setView('Timeline')}
-                        >
-                            Timeline
-                        </button>
-                        <button
-                            className={`px-6 py-2 text-sm transition-colors rounded-xl
-                            ${view === 'Board' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                            onClick={() => setView('Board')}
-                        >
-                            Board
-                        </button>
-                        <button
-                            className={`px-6 py-2 text-sm transition-colors rounded-xl
-                            ${view === 'Table' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                            onClick={() => setView('Table')}
-                        >
-                            Table
-                        </button>
-                    </div>
-
-                    <div className="flex items-center gap-6">
-                        <select className={`text-sm px-4 py-2.5 rounded-xl border outline-none cursor-pointer transition-colors
-                            ${isDark ? 'bg-[#1F2125] text-gray-300 border-gray-800 hover:border-gray-700' : 'bg-white text-gray-700 border-rose-200 hover:border-rose-300'}`}>
-                            <option>1 Weeks</option>
-                        </select>
-
-                        <div className="flex flex-col items-end gap-1">
-                            <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-blue-400' : 'text-blue-500'}`}>
-                                <Pencil size={12} />
-                                <span>30 minutes ago</span>
-                                <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                                    <div className={`w-5 h-5 rounded-full bg-pink-500 border ${isDark ? 'border-[#0F1014]' : 'border-white'}`}></div>
-                                    <span>Sarah</span>
-                                </div>
-                            </div>
-
-                            <div className={`flex items-center gap-4 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>
-                                <button className={`cursor-pointer transition ${isDark ? 'hover:text-white' : 'hover:text-gray-600'}`}><ChevronLeft size={20} /></button>
-                                <span className="text-xl font-semibold">June, 2023</span>
-                                <button className={`cursor-pointer transition ${isDark ? 'hover:text-white' : 'hover:text-gray-600'}`}><ChevronRight size={20} /></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Main Content: show calendar or board depending on view */}
-                {view === 'Board' ? (
-                    <BoardView />
-                ) : view === 'Timeline' ? (
-                    <TimelineView />
-                ) : view === 'Table' ? (
-                    <TableView />
-                ) : view === 'Dashboard' ? (
+                {view === 'Dashboard' ? (
                     <DashboardView />
                 ) : (
-                    <div className="p-6">
-                        <div className="flex gap-4">
-                            {/* Time Column */}
-                            <div className="w-20 flex flex-col pt-8">
-                                {timeSlots.map((time) => (
-                                    <div key={time} className={`h-24 text-xs border-b transition-colors
-                                        ${isDark ? 'text-gray-500 border-gray-800' : 'text-gray-500 border-rose-200'}`}>
-                                        {time}
-                                    </div>
-                                ))}
+                    <>
+                        <div className={`flex items-center justify-between px-6 py-4 border-b transition-colors duration-300
+                    ${isDark ? 'border-[color-mix(in_oklab,var(--background),black_70%)] text-foreground' : 'border-rose-200 text-gray-900'}`}>
+                            <div className={`flex items-center gap-1 p-1 rounded-xl border transition-colors
+                        ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-200'}`}>
+                                <button
+                                    className={`px-6 py-2 text-sm rounded-xl shadow-sm font-medium transition-colors
+                            ${view === 'Card' ? isDark ? 'bg-[#2C2E33] text-white' : 'bg-rose-100 text-gray-900' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                                    onClick={() => setView('Card')}
+                                >
+                                    Card
+                                </button>
+                                <button
+                                    className={`px-6 py-2 text-sm transition-colors rounded-xl
+                            ${view === 'Timeline' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                                    onClick={() => setView('Timeline')}
+                                >
+                                    Timeline
+                                </button>
+                                <button
+                                    className={`px-6 py-2 text-sm transition-colors rounded-xl
+                            ${view === 'Board' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                                    onClick={() => setView('Board')}
+                                >
+                                    Board
+                                </button>
+                                <button
+                                    className={`px-6 py-2 text-sm transition-colors rounded-xl
+                            ${view === 'Table' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                                    onClick={() => setView('Table')}
+                                >
+                                    Table
+                                </button>
                             </div>
 
-                            {/* Days Columns */}
-                            {days.map((day, dayIndex) => (
-                                <div key={day.name} className="flex-1 min-w-[200px]">
-                                    <div className={`text-center mb-4 pb-2 border-b transition-colors
-                                        ${isDark ? 'border-[color-mix(in_oklab,var(--background),black_70%)]' : 'border-rose-200'}`}>
-                                        <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{day.full}</div>
-                                        <div className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{day.date}/{day.name}</div>
+                            <div className="flex items-center gap-6">
+                                <select className={`text-sm px-4 py-2.5 rounded-xl border outline-none cursor-pointer transition-colors
+                            ${isDark ? 'bg-[#1F2125] text-gray-300 border-gray-800 hover:border-gray-700' : 'bg-white text-gray-700 border-rose-200 hover:border-rose-300'}`}>
+                                    <option>1 Weeks</option>
+                                </select>
+
+                                <div className="flex flex-col items-end gap-1">
+                                    <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-blue-400' : 'text-blue-500'}`}>
+                                        <Pencil size={12} />
+                                        <span>30 minutes ago</span>
+                                        <div className={`flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                                            <div className={`w-5 h-5 rounded-full bg-pink-500 border ${isDark ? 'border-[#0F1014]' : 'border-white'}`}></div>
+                                            <span>Sarah</span>
+                                        </div>
                                     </div>
 
-                                    <div className="relative">
-                                        {/* Time Grid (Droppable Slots) */}
-                                        {timeSlots.map((time, timeIndex) => (
-                                            <DroppableSlot key={time} dayIndex={dayIndex} timeIndex={timeIndex} isDark={isDark}>
-                                                {/* Render Draggable Tasks for this specific slot */}
-                                                {renderedTasks[`${dayIndex}-${timeIndex}`]?.map((task) => (
-                                                    <DraggableTask
-                                                        key={task.id}
-                                                        task={task}
-                                                        isDark={isDark}
-                                                        getTaskStyles={getTaskStyles}
-                                                        isDragging={activeTask?.id === task.id}
-                                                    />
-                                                ))}
-
-                                                {/* Add New Task Placeholder (Unchanged) - Added unique key and repositioning */}
-                                                {dayIndex === 1 && timeIndex === 3 && tasks.filter(t => t.startDayIndex === dayIndex && t.startTimeIndex === timeIndex).length === 0 && (
-                                                    <div className={`absolute top-0 left-0 right-0 border-2 border-dashed rounded-xl p-2 h-24 flex items-center justify-center cursor-pointer transition-all duration-300 group
-                                                        ${isDark ? 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/60 hover:shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'border-green-300 bg-green-50 hover:bg-green-100 hover:border-green-400 hover:shadow-sm'}`}>
-                                                        <div className="text-center">
-                                                            <div className="flex justify-center mb-1"><Plus size={24} className={`transition-all duration-300 group-hover:scale-110 ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-500 group-hover:text-green-600'}`} /></div>
-                                                            <div className={`text-xs transition-colors ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-600 group-hover:text-green-700'}`}>Add New Task</div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                {dayIndex === 2 && timeIndex === 2 && tasks.filter(t => t.startDayIndex === dayIndex && t.startTimeIndex === timeIndex).length === 0 && (
-                                                    <div className={`absolute top-0 left-0 right-0 border-2 border-dashed rounded-xl p-2 h-24 flex items-center justify-center cursor-pointer transition-all duration-300 group
-                                                        ${isDark ? 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/60 hover:shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'border-green-300 bg-green-50 hover:bg-green-100 hover:border-green-400 hover:shadow-sm'}`}>
-                                                        <div className="text-center">
-                                                            <div className="flex justify-center mb-1"><Plus size={24} className={`transition-all duration-300 group-hover:scale-110 ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-500 group-hover:text-green-600'}`} /></div>
-                                                            <div className={`text-xs transition-colors ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-600 group-hover:text-green-700'}`}>Add New Task</div>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                            </DroppableSlot>
-                                        ))}
+                                    <div className={`flex items-center gap-4 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>
+                                        <button className={`cursor-pointer transition ${isDark ? 'hover:text-white' : 'hover:text-gray-600'}`}><ChevronLeft size={20} /></button>
+                                        <span className="text-xl font-semibold">June, 2023</span>
+                                        <button className={`cursor-pointer transition ${isDark ? 'hover:text-white' : 'hover:text-gray-600'}`}><ChevronRight size={20} /></button>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    </div>
+
+                        {view === 'Board' || view === 'task-board' ? (
+                            <BoardView />
+                        ) : view === 'Timeline' ? (
+                            <TimelineView />
+                        ) : view === 'Table' ? (
+                            <TableView />
+                        ) : view === 'activities' ? (
+                            <ActivitiesView />
+                        ) : view === 'inbox' ? (
+                            <InboxView />
+                        ) : view === 'market-places' ? (
+                            <MarketPlacesView />
+                        ) : view === 'template' ? (
+                            <TemplateView />
+                        ) : (
+                            <div className="p-6">
+                                <div className="flex gap-4">
+                                    {/* Time Column */}
+                                    <div className="w-20 flex flex-col pt-8">
+                                        {timeSlots.map((time) => (
+                                            <div key={time} className={`h-24 text-xs border-b transition-colors
+                                        ${isDark ? 'text-gray-500 border-gray-800' : 'text-gray-500 border-rose-200'}`}>
+                                                {time}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Days Columns */}
+                                    {days.map((day, dayIndex) => (
+                                        <div key={day.name} className="flex-1 min-w-[200px]">
+                                            <div className={`text-center mb-4 pb-2 border-b transition-colors
+                                        ${isDark ? 'border-[color-mix(in_oklab,var(--background),black_70%)]' : 'border-rose-200'}`}>
+                                                <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{day.full}</div>
+                                                <div className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{day.date}/{day.name}</div>
+                                            </div>
+
+                                            <div className="relative">
+                                                {/* Time Grid (Droppable Slots) */}
+                                                {timeSlots.map((time, timeIndex) => (
+                                                    <DroppableSlot key={time} dayIndex={dayIndex} timeIndex={timeIndex} isDark={isDark}>
+                                                        {/* Render Draggable Tasks for this specific slot */}
+                                                        {renderedTasks[`${dayIndex}-${timeIndex}`]?.map((task) => (
+                                                            <DraggableTask
+                                                                key={task.id}
+                                                                task={task}
+                                                                isDark={isDark}
+                                                                getTaskStyles={getTaskStyles}
+                                                                isDragging={activeTask?.id === task.id}
+                                                            />
+                                                        ))}
+
+                                                        {/* Add New Task Placeholder (Unchanged) - Added unique key and repositioning */}
+                                                        {dayIndex === 1 && timeIndex === 3 && tasks.filter(t => t.startDayIndex === dayIndex && t.startTimeIndex === timeIndex).length === 0 && (
+                                                            <div className={`absolute top-0 left-0 right-0 border-2 border-dashed rounded-xl p-2 h-24 flex items-center justify-center cursor-pointer transition-all duration-300 group
+                                                        ${isDark ? 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/60 hover:shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'border-green-300 bg-green-50 hover:bg-green-100 hover:border-green-400 hover:shadow-sm'}`}>
+                                                                <div className="text-center">
+                                                                    <div className="flex justify-center mb-1"><Plus size={24} className={`transition-all duration-300 group-hover:scale-110 ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-500 group-hover:text-green-600'}`} /></div>
+                                                                    <div className={`text-xs transition-colors ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-600 group-hover:text-green-700'}`}>Add New Task</div>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                        {dayIndex === 2 && timeIndex === 2 && tasks.filter(t => t.startDayIndex === dayIndex && t.startTimeIndex === timeIndex).length === 0 && (
+                                                            <div className={`absolute top-0 left-0 right-0 border-2 border-dashed rounded-xl p-2 h-24 flex items-center justify-center cursor-pointer transition-all duration-300 group
+                                                        ${isDark ? 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/60 hover:shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'border-green-300 bg-green-50 hover:bg-green-100 hover:border-green-400 hover:shadow-sm'}`}>
+                                                                <div className="text-center">
+                                                                    <div className="flex justify-center mb-1"><Plus size={24} className={`transition-all duration-300 group-hover:scale-110 ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-500 group-hover:text-green-600'}`} /></div>
+                                                                    <div className={`text-xs transition-colors ${isDark ? 'text-green-500/50 group-hover:text-green-400' : 'text-green-600 group-hover:text-green-700'}`}>Add New Task</div>
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                    </DroppableSlot>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 
