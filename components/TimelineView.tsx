@@ -129,7 +129,7 @@ export default function TimelineView() {
                   <div ref={scrollContainerRef} className="flex-1 overflow-x-auto overflow-y-auto">
                         <div className="min-w-[1400px] h-full flex flex-col">
                               {/* Header Row */}
-                              <div className="flex border-b sticky top-0 z-20 backdrop-blur-sm bg-background/80">
+                              <div className={`flex border-b sticky top-0 z-20 ${isDark ? 'bg-slate-950 border-gray-800' : 'bg-rose-50 border-gray-100'}`}>
                                     {days.map((day, index) => (
                                           <div
                                                 key={index}

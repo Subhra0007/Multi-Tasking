@@ -33,7 +33,7 @@ const MessageItem: React.FC<any> = ({ message, isDark }) => {
         <div className={`flex items-center gap-4 p-3 rounded-xl transition-colors cursor-pointer ${itemBg} ${!message.isRead && (isDark ? 'bg-white/5' : 'bg-rose-100/50')}`}>
             <div className={`w-2 h-2 rounded-full ${message.tagColor}`}></div>
 
-            <div className={`flex-grow ${unreadClass}`}>
+            <div className={`grow ${unreadClass}`}>
                 <p className="text-sm font-semibold">{message.sender}</p>
                 <p className={`text-xs truncate ${textMuted}`}>{message.subject}</p>
             </div>
@@ -49,7 +49,7 @@ export function InboxView() {
     const cardBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
 
     return (
-        <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-[#121317]' : 'bg-rose-50'} flex gap-8`}>
+        <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-rose-50'} flex gap-8`}>
 
             {/* Main Inbox List (60% width) */}
             <div className="w-2/3">

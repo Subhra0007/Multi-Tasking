@@ -83,7 +83,7 @@ export default function ActivitiesView() {
       const cardBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
 
       return (
-            <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-[#121317]' : 'bg-rose-50'} flex gap-8`}>
+            <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-rose-50'} flex gap-8`}>
 
                   {/* Main Activity Feed (70% width) */}
                   <div className="flex-grow">

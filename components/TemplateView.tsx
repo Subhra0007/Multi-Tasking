@@ -49,7 +49,7 @@ export default function TemplateView() {
       const cardBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
 
       return (
-            <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-[#121317]' : 'bg-rose-50'}`}>
+            <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-rose-50'}`}>
                   <h1 className={`text-3xl font-bold flex items-center gap-3 mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         <Layout size={32} className="text-teal-500" /> Template Library
                   </h1>
