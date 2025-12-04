@@ -722,7 +722,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
       </div>
 
       {/* 3. Bottom Card */}
-      <div className="mt-auto p-6">
+      <div className="mt-auto p-6 pb-20">
         {open && (
           <>
             <div className={`text-[10px] font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Onboarding</div>
@@ -771,12 +771,17 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
         )}
       </div>
 
-      {/* Toggle Close Button */}
+      {/* Toggle Close Button - Fixed at Bottom */}
       <motion.button
         layout
         onClick={() => setOpen((pv) => !pv)}
-        className={`absolute bottom-0 left-0 right-0 border-t transition-colors hover:bg-slate-100 dark:hover:bg-white/5
-          ${isDark ? 'border-gray-800' : 'border-rose-200'}`}
+        className={`fixed bottom-0 left-0 border-t transition-colors z-50
+          ${isDark
+            ? 'border-gray-800 bg-[#0F1014] hover:bg-[#1a1b1e]'
+            : 'border-rose-200 bg-rose-50 hover:bg-rose-100'}`}
+        style={{
+          width: open ? "300px" : "fit-content",
+        }}
       >
         <div className="flex items-center p-2">
           <motion.div
