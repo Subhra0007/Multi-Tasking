@@ -193,23 +193,26 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
   return (
     <motion.nav
       layout
-      className={`h-screen overflow-y-auto flex flex-col transition-colors duration-300 font-sans shrink-0 relative
-      ${isDark ? 'bg-[#0F1014] text-gray-300' : 'bg-rose-50 text-gray-900'}`}
+      className={`h-screen flex flex-col transition-colors duration-300 font-sans shrink-0 relative border-t
+      ${isDark ? 'bg-[#0F1014] text-gray-300 border-gray-800' : 'bg-rose-50 text-gray-900 border-rose-200'}`}
       style={{
-        width: open ? "300px" : "fit-content",
+        width: open ? "300px" : "80px",
+        minWidth: open ? "300px" : "80px",
       }}
     >
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto pb-16">
 
       {/* 1. User Profile */}
-      <div className="p-6 pb-2">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
+      <div className={`${open ? 'p-6 pb-2' : 'p-4 pb-2'}`}>
+        <div className={`flex items-center ${open ? 'justify-between mb-6' : 'justify-center mb-4'}`}>
+          <div className={`flex items-center ${open ? 'gap-3' : 'justify-center'}`}>
             <div className="relative">
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center text-white overflow-hidden shadow-lg border-2 
+              <div className={`${open ? 'w-12 h-12' : 'w-10 h-10'} rounded-full bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center text-white overflow-hidden shadow-lg border-2 
                 ${isDark ? 'border-[#1a1b1e]' : 'border-white'}`}>
-                <span className="font-bold text-lg">W</span>
+                <span className={`font-bold ${open ? 'text-lg' : 'text-base'}`}>W</span>
               </div>
-              <div className={`absolute top-0 right-0 w-3 h-3 bg-teal-400 rounded-full border-2 
+              <div className={`absolute top-0 right-0 ${open ? 'w-3 h-3' : 'w-2.5 h-2.5'} bg-teal-400 rounded-full border-2 
                 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
             </div>
             {open && (
@@ -259,7 +262,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
         )}
       </div>
 
-      <div className="px-6 py-2">
+      <div className={`${open ? 'px-6 py-2' : 'px-2 py-2'}`}>
         {open && (
           <div className={`text-xs font-bold uppercase tracking-wider mb-3 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Overview</div>
         )}
@@ -277,13 +280,13 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
               ${isDashboardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center gap-3 px-4 py-2 transition-colors
+              className={`relative flex items-center ${open ? 'gap-3 px-4' : 'justify-center px-2'} py-2 transition-colors
               ${isDashboardActive
                   ? 'text-white'
                   : isDark ? 'text-gray-400' : 'text-gray-700'}`}
             >
-              <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                <LayoutGrid size={20} />
+              <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                <LayoutGrid size={open ? 20 : 22} />
               </motion.div>
               {open && (
                 <motion.span
@@ -312,13 +315,13 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
               ${isProjectBoardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center gap-3 px-4 py-2 rounded-[11px] transition-colors
-              ${isProjectBoardActive // Using view prop for active state check (optional, or keep local if it's just sidebar state)
+              className={`relative flex items-center ${open ? 'gap-3 px-4' : 'justify-center px-2'} py-2 rounded-[11px] transition-colors
+              ${isProjectBoardActive
                   ? 'text-white'
                   : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                <Folder size={20} className={isProjectBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                <Folder size={open ? 20 : 22} className={isProjectBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
               </motion.div>
               {open && (
                 <motion.span
@@ -421,13 +424,13 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
               ${isTaskBoardActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center gap-3 px-4 py-2 rounded-[11px] transition-colors
+              className={`relative flex items-center ${open ? 'gap-3 px-4' : 'justify-center px-2'} py-2 rounded-[11px] transition-colors
               ${isTaskBoardActive
                   ? 'text-white'
                   : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                <FileText size={20} className={isTaskBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                <FileText size={open ? 20 : 22} className={isTaskBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
               </motion.div>
               {open && (
                 <motion.span
@@ -520,14 +523,14 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 ${isScheduleActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+              className={`relative flex items-center ${open ? 'justify-between px-4' : 'justify-center px-2'} py-2 transition-colors
                 ${isScheduleActive
                   ? 'text-white'
                   : textMuted}`}
             >
-              <div className="flex items-center gap-3">
-                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                  <Calendar size={20} />
+              <div className={`flex items-center ${open ? 'gap-3' : 'justify-center'}`}>
+                <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                  <Calendar size={open ? 20 : 22} />
                 </motion.div>
                 {open && (
                   <motion.span
@@ -557,14 +560,14 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 ${isActivitiesActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+              className={`relative flex items-center ${open ? 'justify-between px-4' : 'justify-center px-2'} py-2 transition-colors
                 ${isActivitiesActive
                   ? 'text-white'
                   : textMuted}`}
             >
-              <div className="flex items-center gap-3">
-                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                  <Activity size={20} />
+              <div className={`flex items-center ${open ? 'gap-3' : 'justify-center'}`}>
+                <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                  <Activity size={open ? 20 : 22} />
                 </motion.div>
                 {open && (
                   <motion.span
@@ -598,14 +601,14 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 ${isInboxActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+              className={`relative flex items-center ${open ? 'justify-between px-4' : 'justify-center px-2'} py-2 transition-colors
                 ${isInboxActive
                   ? 'text-white'
                   : textMuted}`}
             >
-              <div className="flex items-center gap-3">
-                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                  <Inbox size={20} />
+              <div className={`flex items-center ${open ? 'gap-3' : 'justify-center'}`}>
+                <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                  <Inbox size={open ? 20 : 22} />
                 </motion.div>
                 {open && (
                   <motion.span
@@ -643,14 +646,14 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 ${isTemplateActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+              className={`relative flex items-center ${open ? 'justify-between px-4' : 'justify-center px-2'} py-2 transition-colors
                 ${isTemplateActive
                   ? 'text-white'
                   : textMuted}`}
             >
-              <div className="flex items-center gap-3">
-                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                  <Layout size={20} />
+              <div className={`flex items-center ${open ? 'gap-3' : 'justify-center'}`}>
+                <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                  <Layout size={open ? 20 : 22} />
                 </motion.div>
                 {open && (
                   <motion.span
@@ -687,14 +690,14 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 ${isMarketPlacesActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
-              className={`relative flex items-center justify-between px-4 py-2 transition-colors
+              className={`relative flex items-center ${open ? 'justify-between px-4' : 'justify-center px-2'} py-2 transition-colors
                 ${isMarketPlacesActive
                   ? 'text-white'
                   : textMuted}`}
             >
-              <div className="flex items-center gap-3">
-                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
-                  <Store size={20} />
+              <div className={`flex items-center ${open ? 'gap-3' : 'justify-center'}`}>
+                <motion.div layout className={`grid h-full ${open ? 'w-10' : 'w-full'} place-content-center text-lg`}>
+                  <Store size={open ? 20 : 22} />
                 </motion.div>
                 {open && (
                   <motion.span
@@ -722,7 +725,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
       </div>
 
       {/* 3. Bottom Card */}
-      <div className="mt-auto p-6 pb-20">
+      <div className={`mt-auto ${open ? 'p-6 pb-4' : 'p-4 pb-2'}`}>
         {open && (
           <>
             <div className={`text-[10px] font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Onboarding</div>
@@ -769,9 +772,31 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
             </div>
           </>
         )}
+
+        {/* Theme Toggle - Always visible when collapsed */}
+        {!open && (
+          <div className="flex justify-center mb-2">
+            <div className={`flex items-center rounded-full p-1 border transition-colors 
+              ${isDark ? 'bg-black/40 border-gray-800' : 'bg-gray-100 border-rose-200'}`}>
+              <button
+                onClick={() => setGlobalTheme(false)}
+                className={`p-1.5 rounded-full transition-all duration-300 ${!isDark ? 'bg-white text-amber-500 shadow-sm' : 'text-gray-600 hover:text-gray-400'}`}
+              >
+                <Sun size={16} />
+              </button>
+              <button
+                onClick={() => setGlobalTheme(true)}
+                className={`p-1.5 rounded-full transition-all duration-300 ${isDark ? 'bg-[#2c2d31] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                <Moon size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       </div>
 
-      {/* Toggle Close Button - Fixed at Bottom */}
+      {/* Toggle Close Button - Fixed at Bottom of Viewport */}
       <motion.button
         layout
         onClick={() => setOpen((pv) => !pv)}
@@ -780,16 +805,17 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
             ? 'border-gray-800 bg-[#0F1014] hover:bg-[#1a1b1e]'
             : 'border-rose-200 bg-rose-50 hover:bg-rose-100'}`}
         style={{
-          width: open ? "300px" : "fit-content",
+          width: open ? "300px" : "80px",
         }}
       >
-        <div className="flex items-center p-2">
+        <div className={`flex items-center ${open ? 'justify-start px-4' : 'justify-center'} p-2`}>
           <motion.div
             layout
-            className="grid size-10 place-content-center text-lg"
+            className={`grid ${open ? 'size-10' : 'size-8'} place-content-center text-lg`}
           >
             <FiChevronsRight
-              className={`transition-transform ${open && "rotate-180"}`}
+              className={`transition-transform ${!open && "rotate-180"} ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
+              size={open ? 20 : 18}
             />
           </motion.div>
           {open && (
