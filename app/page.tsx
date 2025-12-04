@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar view={view} setView={setView} />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">

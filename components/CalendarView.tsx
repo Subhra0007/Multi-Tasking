@@ -4,6 +4,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Pencil, Plus, FileText, Check } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import BoardView from '@/components/BoardView';
+import TimelineView from '@/components/TimelineView';
+import TableView from '@/components/TableView';
+import DashboardView from '@/components/DashboardView';
 
 // 💡 DND Imports
 import {
@@ -94,7 +97,7 @@ function DraggableTask({ task, isDark, getTaskStyles, isDragging }: { task: Cale
     });
 
     const { bg, border, shadow, text } = getTaskStyles(task.color);
-    
+
     // Apply DND transform, ensuring the card is lifted when dragging
     const style = transform
         ? {
@@ -102,7 +105,7 @@ function DraggableTask({ task, isDark, getTaskStyles, isDragging }: { task: Cale
             zIndex: isDragging ? 50 : 30, // Higher z-index for the dragged overlay
         }
         : { zIndex: 30 };
-    
+
     const taskHeight = task.durationSlots * slotHeight;
 
     // Helper to render task content
@@ -265,14 +268,14 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
         };
         return (styles as any)[color] || styles.yellow;
     };
-    
+
     // 💡 DND Handlers
     const handleDragStart = (event: any) => {
         if (event.active.data.current?.type === 'Task') {
             setActiveTask(event.active.data.current.task);
         }
     };
-    
+
     const handleDragCancel = () => {
         setActiveTask(null);
     };
@@ -280,12 +283,12 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
     const handleDragEnd = (event: DragEndEvent) => {
         setActiveTask(null);
         const { active, over } = event;
-        
+
         if (!over || active.id === over.id || over.data.current?.type !== 'Slot') return;
 
         const activeTask = active.data.current?.task as CalendarTask;
         const targetSlot = over.data.current as { dayIndex: number, timeIndex: number };
-        
+
         // Update the task's position
         setTasks(prevTasks => prevTasks.map(task => {
             if (task.id === activeTask.id) {
@@ -315,7 +318,7 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
     }, [tasks]);
 
     return (
-        <DndContext 
+        <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragStart={handleDragStart}
@@ -337,10 +340,10 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
                         </button>
                         <button
                             className={`px-6 py-2 text-sm transition-colors rounded-xl
-                            ${view === 'Blocks' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                            onClick={() => setView('Blocks')}
+                            ${view === 'Timeline' ? isDark ? 'text-white bg-[#2C2E33]' : 'text-gray-900 bg-rose-100' : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                            onClick={() => setView('Timeline')}
                         >
-                            Blocks
+                            Timeline
                         </button>
                         <button
                             className={`px-6 py-2 text-sm transition-colors rounded-xl
@@ -386,6 +389,12 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
                 {/* Main Content: show calendar or board depending on view */}
                 {view === 'Board' ? (
                     <BoardView />
+                ) : view === 'Timeline' ? (
+                    <TimelineView />
+                ) : view === 'Table' ? (
+                    <TableView />
+                ) : view === 'Dashboard' ? (
+                    <DashboardView />
                 ) : (
                     <div className="p-6">
                         <div className="flex gap-4">
@@ -414,11 +423,11 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
                                             <DroppableSlot key={time} dayIndex={dayIndex} timeIndex={timeIndex} isDark={isDark}>
                                                 {/* Render Draggable Tasks for this specific slot */}
                                                 {renderedTasks[`${dayIndex}-${timeIndex}`]?.map((task) => (
-                                                    <DraggableTask 
-                                                        key={task.id} 
-                                                        task={task} 
-                                                        isDark={isDark} 
-                                                        getTaskStyles={getTaskStyles} 
+                                                    <DraggableTask
+                                                        key={task.id}
+                                                        task={task}
+                                                        isDark={isDark}
+                                                        getTaskStyles={getTaskStyles}
                                                         isDragging={activeTask?.id === task.id}
                                                     />
                                                 ))}
@@ -458,10 +467,10 @@ export default function CalendarView({ view, setView }: CalendarViewProps) {
                 <DragOverlay dropAnimation={null}>
                     {activeTask ? (
                         <div style={{ width: '200px' }} className="rounded-xl">
-                            <DraggableTask 
-                                task={activeTask} 
-                                isDark={isDark} 
-                                getTaskStyles={getTaskStyles} 
+                            <DraggableTask
+                                task={activeTask}
+                                isDark={isDark}
+                                getTaskStyles={getTaskStyles}
                                 isDragging={true}
                             />
                         </div>

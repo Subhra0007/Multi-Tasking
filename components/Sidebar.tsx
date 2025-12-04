@@ -20,10 +20,10 @@ import {
   Wallet,
   Bookmark,
   Triangle,
-  ListChecks,    
-  Layout,        
-  Store,         
-  Notebook       
+  ListChecks,
+  Layout,
+  Store,
+  Notebook
 } from 'lucide-react';
 
 // --- TYPE DEFINITIONS FOR TYPE SAFETY ---
@@ -31,16 +31,16 @@ import {
 type MenuName = 'dashboard' | 'project-board' | 'task-board' | 'schedule' | 'activities' | 'inbox' | null;
 
 interface TaskSubMenu {
-    name: string;
-    icon: React.ReactNode;
-    count: number | null;
+  name: string;
+  icon: React.ReactNode;
+  count: number | null;
 }
 
 // --- TYPEWRITER ANIMATION COMPONENT (TypeScript) ---
 
 interface TypewriterProps {
-    text: string;
-    speed?: number;
+  text: string;
+  speed?: number;
 }
 
 const Typewriter: React.FC<TypewriterProps> = ({ text, speed = 150 }) => {
@@ -48,8 +48,8 @@ const Typewriter: React.FC<TypewriterProps> = ({ text, speed = 150 }) => {
 
   useEffect(() => {
     let i = 0;
-    setDisplayText(''); 
-    
+    setDisplayText('');
+
     const typingInterval = setInterval(() => {
       if (i < text.length) {
         setDisplayText(() => text.substring(0, i + 1));
@@ -73,12 +73,17 @@ const Typewriter: React.FC<TypewriterProps> = ({ text, speed = 150 }) => {
 
 // --------------------------------------------------
 
-export default function Sidebar() {
+interface SidebarProps {
+  view: string;
+  setView: (view: string) => void;
+}
+
+export default function Sidebar({ view, setView }: SidebarProps) {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState<boolean>(false);
-  
-  const [expandedMenu, setExpandedMenu] = useState<MenuName>('task-board'); 
-  const [activeMenu, setActiveMenu] = useState<MenuName>('task-board'); 
+
+  const [expandedMenu, setExpandedMenu] = useState<MenuName>('task-board');
+  // const [activeMenu, setActiveMenu] = useState<MenuName>('task-board'); // Removed local state 
 
   useEffect(() => {
     setMounted(true);
@@ -97,7 +102,7 @@ export default function Sidebar() {
   const toggleMenu = (menu: MenuName) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
-  
+
   // Helper variables for dynamic styles
   const hoverClass: string = isDark ? 'hover:bg-white/5' : 'hover:bg-rose-200/50';
   const textMuted: string = isDark ? 'text-gray-400' : 'text-gray-600';
@@ -115,10 +120,10 @@ export default function Sidebar() {
   const RadixMenuWrapper: React.FC<{ menuName: MenuName, expanded: boolean, children: React.ReactNode }> = ({ expanded, children }) => {
     // If you define 'scale-in' and 'scale-out' in your tailwind.config.js, replace the transition classes below.
     return (
-      <div 
+      <div
         className={`pl-4 mt-2 mb-4 overflow-hidden transition-all duration-300 ease-out 
           ${expanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'} 
-          ${expanded 
+          ${expanded
             ? 'transition-opacity duration-200 ease-out translate-y-0 scale-100' // Open state (visible, full scale)
             : 'transition-all duration-150 ease-in scale-95 opacity-0' // Closed state (scaled down, invisible)
           }`}
@@ -147,7 +152,7 @@ export default function Sidebar() {
             </div>
             <div>
               <div className={`font-bold text-lg min-w-[60px] ${isDark ? 'text-white' : 'text-gray-950'}`}>
-                 <Typewriter text="Walter" speed={150} />
+                <Typewriter text="Walter" speed={150} />
               </div>
               <div className={`text-xs font-bold ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Designer Pro+</div>
             </div>
@@ -179,49 +184,49 @@ export default function Sidebar() {
 
       <div className="px-6 py-2">
         <div className={`text-xs font-bold uppercase tracking-wider mb-3 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Overview</div>
-        
+
         <div className="space-y-2">
           {/* Dashboard */}
           <div
             className="relative cursor-pointer group rounded-xl overflow-hidden"
-            onClick={() => setActiveMenu('dashboard')}
+            onClick={() => setView('Dashboard')}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-              ${activeMenu === 'dashboard' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+              ${view === 'Dashboard' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center gap-3 px-4 py-2 transition-colors
-              ${activeMenu === 'dashboard'
-                ? 'text-white'
-                : isDark ? 'text-gray-400' : 'text-gray-700'}`}
+              ${view === 'Dashboard'
+                  ? 'text-white'
+                  : isDark ? 'text-gray-400' : 'text-gray-700'}`}
             >
               <LayoutGrid size={20} />
-              <span className="font-medium">Dashboard</span> 
+              <span className="font-medium">Dashboard</span>
               <div className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500"></div>
             </div>
           </div>
 
           {/* Project Board */}
           <div
-            className="group relative overflow-hidden rounded-xl cursor-pointer" 
+            className="group relative overflow-hidden rounded-xl cursor-pointer"
             onClick={() => {
-              setActiveMenu('project-board');
+              // setActiveMenu('project-board'); // Removed local state set
               toggleMenu('project-board');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-              ${activeMenu === 'project-board' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+              ${view === 'project-board' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center gap-3 px-4 py-2 rounded-[11px] transition-colors
-              ${activeMenu === 'project-board'
-                ? 'text-white'
-                : isDark ? 'text-gray-300' : 'text-gray-800'}`}
+              ${view === 'project-board' // Using view prop for active state check (optional, or keep local if it's just sidebar state)
+                  ? 'text-white'
+                  : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <Folder size={20} className={activeMenu === 'project-board' ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
-              <span className="font-normal">Project Board</span> 
+              <Folder size={20} className={view === 'project-board' ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              <span className="font-normal">Project Board</span>
               <ChevronDown
                 className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'project-board' ? 'rotate-180' : ''}`}
               />
@@ -296,22 +301,22 @@ export default function Sidebar() {
           <div
             className="group relative overflow-hidden rounded-xl cursor-pointer"
             onClick={() => {
-              setActiveMenu('task-board');
+              setView('task-board');
               toggleMenu('task-board');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-              ${activeMenu === 'task-board' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+              ${view === 'task-board' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center gap-3 px-4 py-2 rounded-[11px] transition-colors
-              ${activeMenu === 'task-board'
-                ? 'text-white'
-                : isDark ? 'text-gray-300' : 'text-gray-800'}`}
+              ${view === 'task-board'
+                  ? 'text-white'
+                  : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <FileText size={20} className={activeMenu === 'task-board' ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
-              <span className="font-normal">Task Board</span> 
+              <FileText size={20} className={view === 'task-board' ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              <span className="font-normal">Task Board</span>
               <ChevronDown
                 className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'task-board' ? 'rotate-180' : ''}`}
               />
@@ -322,31 +327,31 @@ export default function Sidebar() {
         {/* Task Board Structure - USING RADIX-STYLE WRAPPER */}
         <RadixMenuWrapper expanded={expandedMenu === 'task-board'} menuName={'task-board'}>
           <div className={`border-l space-y-1 ${borderClass}`}>
-            
+
             {taskBoardSubMenus.map((item) => (
               <div key={item.name} className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
                 {/* Custom icon from the map, styled similarly to the dots */}
                 <div className="w-2.5 h-2.5 flex items-center justify-center">
-                    {item.icon}
+                  {item.icon}
                 </div>
-                
+
                 <span className="text-sm font-medium">{item.name}</span>
-                
+
                 {/* Count badge, only render if count exists */}
                 {item.count && (
-                    <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>
-                        {item.count}
-                    </span>
+                  <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>
+                    {item.count}
+                  </span>
                 )}
               </div>
             ))}
-            
+
             {/* Create new Task Board */}
             <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 text-teal-600 ${isDark ? 'text-teal-600 hover:text-teal-500' : 'text-teal-600 hover:text-teal-800'}`}>
               <Plus size={16} />
               <span className="text-sm font-bold">Create new Task Board</span>
             </div>
-            
+
           </div>
         </RadixMenuWrapper>
 
@@ -355,44 +360,44 @@ export default function Sidebar() {
           {/* Schedule */}
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
-            onClick={() => setActiveMenu('schedule')}
+            onClick={() => setView('schedule')}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${activeMenu === 'schedule' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${view === 'schedule' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${activeMenu === 'schedule'
+                ${view === 'schedule'
                   ? 'text-white'
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Calendar size={20} /> 
-                <span className="text-base font-normal">Schedule</span> 
+                <Calendar size={20} />
+                <span className="text-base font-normal">Schedule</span>
               </div>
-              <span className={`text-xs ${activeMenu === 'schedule' ? 'text-white/80' : isDark ? 'text-gray-500' : 'text-gray-600'}`}>June, 28, 2023</span>
+              <span className={`text-xs ${view === 'schedule' ? 'text-white/80' : isDark ? 'text-gray-500' : 'text-gray-600'}`}>June, 28, 2023</span>
             </div>
           </div>
 
           {/* Activities */}
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
-            onClick={() => setActiveMenu('activities')}
+            onClick={() => setView('activities')}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${activeMenu === 'activities' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${view === 'activities' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${activeMenu === 'activities'
+                ${view === 'activities'
                   ? 'text-white'
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Activity size={20} /> 
-                <span className="text-base font-normal">Activities</span> 
+                <Activity size={20} />
+                <span className="text-base font-normal">Activities</span>
               </div>
               <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-100 px-2 py-0.5 rounded">
                 New
@@ -403,28 +408,28 @@ export default function Sidebar() {
           {/* Inbox */}
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
-            onClick={() => setActiveMenu('inbox')}
+            onClick={() => setView('inbox')}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${activeMenu === 'inbox' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${view === 'inbox' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${activeMenu === 'inbox'
+                ${view === 'inbox'
                   ? 'text-white'
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Inbox size={20} /> 
-                <span className="text-base font-normal">Inbox</span> 
+                <Inbox size={20} />
+                <span className="text-base font-normal">Inbox</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
                   <div className={`w-5 h-5 rounded-full bg-purple-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
                   <div className={`w-5 h-5 rounded-full bg-teal-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
                 </div>
-                <span className={`text-[10px] font-bold ${activeMenu === 'inbox' ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
+                <span className={`text-[10px] font-bold ${view === 'inbox' ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
               </div>
             </div>
           </div>
@@ -477,6 +482,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-    </div>
+    </div >
   );
 }
