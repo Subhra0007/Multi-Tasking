@@ -32,12 +32,12 @@ const MessageItem: React.FC<any> = ({ message, isDark }) => {
     return (
         <div className={`flex items-center gap-4 p-3 rounded-xl transition-colors cursor-pointer ${itemBg} ${!message.isRead && (isDark ? 'bg-white/5' : 'bg-rose-100/50')}`}>
             <div className={`w-2 h-2 rounded-full ${message.tagColor}`}></div>
-            
+
             <div className={`flex-grow ${unreadClass}`}>
                 <p className="text-sm font-semibold">{message.sender}</p>
                 <p className={`text-xs truncate ${textMuted}`}>{message.subject}</p>
             </div>
-            
+
             <span className={`text-xs font-medium w-20 text-right ${textMuted}`}>{message.time}</span>
         </div>
     );
@@ -50,7 +50,7 @@ export function InboxView() {
 
     return (
         <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-teal-50'} flex gap-8`}>
-            
+
             {/* Main Inbox List (60% width) */}
             <div className="w-2/3">
                 <h1 className={`text-3xl font-bold flex items-center gap-3 mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -68,7 +68,7 @@ export function InboxView() {
                             <button className={`p-2 rounded-full ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}><Trash2 size={18} /></button>
                         </div>
                     </div>
-                    
+
                     <div className="space-y-1">
                         {mockMessages.map(msg => (
                             <MessageItem key={msg.id} message={msg} isDark={isDark} />
@@ -86,7 +86,7 @@ export function InboxView() {
                     <Clock size={14} className="ml-auto" />
                     <span>10:30 AM</span>
                 </div>
-                
+
                 <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     Hi Walter, could you please take a look at the latest wireframes for the new app onboarding flow? They are linked in the Project Board. We need to sign this off by the end of the day. Thanks!
                 </p>

@@ -65,8 +65,8 @@ const ActivityItem: React.FC<any> = ({ activity, isDark }) => {
             <activity.icon size={20} className={`mt-1 ${activity.color}`} />
             <div className="flex-1">
                 <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    <span className="font-semibold">{activity.user}</span> {activity.action} 
-                    <span className="font-semibold text-teal-500"> "{activity.target}"</span> 
+                    <span className="font-semibold">{activity.user}</span> {activity.action}
+                    <span className="font-semibold text-teal-500"> "{activity.target}"</span>
                     {' '} in <span className="font-semibold text-rose-500">{activity.project}</span>
                 </p>
                 <div className={`flex items-center gap-1 mt-1 text-xs ${textMuted}`}>
@@ -84,8 +84,8 @@ export function ActivitiesView() {
     const cardBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
 
     return (
-        <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-[#121317]' : 'bg-rose-50'} flex gap-8`}>
-            
+        <div className={`flex-1 p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-teal-50'} flex gap-8`}>
+
             {/* Main Activity Feed (70% width) */}
             <div className="flex-grow">
                 <h1 className={`text-3xl font-bold flex items-center gap-3 mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>

@@ -7,43 +7,43 @@ import { Layout, Search, Users, FileText, Plus, Zap, Star } from 'lucide-react';
 
 // --- Mock Data ---
 const mockTemplates = [
-    { 
-        id: 1, 
-        name: 'SaaS Launch Checklist', 
-        description: 'Everything you need to plan, execute, and launch a software product, including marketing tasks.', 
-        type: 'Project', 
-        users: 5, 
-        rating: 4.8, 
+    {
+        id: 1,
+        name: 'SaaS Launch Checklist',
+        description: 'Everything you need to plan, execute, and launch a software product, including marketing tasks.',
+        type: 'Project',
+        users: 5,
+        rating: 4.8,
         color: 'bg-teal-600',
-        icon: Layout 
+        icon: Layout
     },
-    { 
-        id: 2, 
-        name: 'Daily Standup Agenda', 
-        description: 'Simple task template for organizing daily team meetings and accountability checks.', 
-        type: 'Task', 
-        users: 12, 
-        rating: 4.5, 
+    {
+        id: 2,
+        name: 'Daily Standup Agenda',
+        description: 'Simple task template for organizing daily team meetings and accountability checks.',
+        type: 'Task',
+        users: 12,
+        rating: 4.5,
         color: 'bg-indigo-600',
         icon: FileText
     },
-    { 
-        id: 3, 
-        name: 'Marketing Campaign Planner', 
-        description: 'Kanban board template optimized for managing diverse digital marketing campaigns.', 
-        type: 'Project', 
-        users: 8, 
-        rating: 4.9, 
+    {
+        id: 3,
+        name: 'Marketing Campaign Planner',
+        description: 'Kanban board template optimized for managing diverse digital marketing campaigns.',
+        type: 'Project',
+        users: 8,
+        rating: 4.9,
         color: 'bg-amber-600',
         icon: Layout
     },
-    { 
-        id: 4, 
-        name: 'Personal Goal Tracker', 
-        description: 'A simple list to break down and track personal objectives and milestones.', 
-        type: 'Task', 
-        users: 25, 
-        rating: 4.7, 
+    {
+        id: 4,
+        name: 'Personal Goal Tracker',
+        description: 'A simple list to break down and track personal objectives and milestones.',
+        type: 'Task',
+        users: 25,
+        rating: 4.7,
         color: 'bg-rose-600',
         icon: FileText
     },
@@ -60,10 +60,10 @@ const TemplateCard: React.FC<any> = ({ template, isDark }) => {
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 text-white ${template.color}`}>
                 <template.icon size={20} />
             </div>
-            
+
             <h4 className={`text-lg font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{template.name}</h4>
             <p className={`text-sm mb-4 h-10 overflow-hidden ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{template.description}</p>
-            
+
             <div className="flex items-center justify-between text-xs pt-3 border-t border-dashed">
                 <div className="flex items-center gap-3">
                     {/* Usage Count */}
@@ -90,7 +90,7 @@ const TemplateCard: React.FC<any> = ({ template, isDark }) => {
 export function TemplateView() {
     const { resolvedTheme } = useTheme();
     const isDark = resolvedTheme === 'dark';
-    const containerBg = isDark ? 'bg-[#121317]' : 'bg-rose-50';
+    const containerBg = isDark ? 'bg-slate-950' : 'bg-teal-50';
     const headerBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
 
     return (
@@ -117,7 +117,7 @@ export function TemplateView() {
                     Create Custom Template
                 </button>
             </div>
-            
+
             {/* Filter/Category Section */}
             <div className="mb-6 flex gap-4 border-b pb-2">
                 <button className="text-sm font-bold text-teal-500 border-b-2 border-teal-500 pb-2">All Templates</button>

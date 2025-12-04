@@ -23,7 +23,7 @@ export default function FiltersBar() {
   const isDark = resolvedTheme === 'dark';
 
   return (
-    <div className="px-6 py-4">
+    <div className="px-6 py-4 ">
       <div className={`flex items-center justify-between rounded-2xl p-2 border transition-colors duration-300
         ${isDark ? 'bg-[#0F1014] border-gray-800' : 'bg-white border-rose-200'}`}>
         {/* Left Section */}

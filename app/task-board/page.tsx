@@ -28,7 +28,7 @@ const mockTasks = [
 // --- Task Card Component ---
 const TaskCard: React.FC<any> = ({ task, isDark }) => {
     const cardBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
-    
+
     // Style the badge based on priority
     let priorityClass = '';
     let priorityIcon = null;
@@ -54,9 +54,9 @@ const TaskCard: React.FC<any> = ({ task, isDark }) => {
                     {task.priority}
                 </span>
             </div>
-            
+
             <h4 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-950'}`}>{task.title}</h4>
-            
+
             <div className={`flex items-center justify-between text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'} pt-2 border-t ${isDark ? 'border-gray-800' : 'border-rose-100'}`}>
                 <div className="flex items-center gap-2">
                     <Calendar size={14} />
@@ -94,7 +94,7 @@ const TaskColumn: React.FC<any> = ({ title, status, tasks, isDark }) => {
                 {tasks.map((task: any) => (
                     <TaskCard key={task.id} task={task} isDark={isDark} />
                 ))}
-                
+
                 {/* Add New Task Button */}
                 <button className={`w-full py-3 border-2 border-dashed rounded-xl font-medium transition-colors 
                     ${isDark ? 'border-gray-700 text-gray-500 hover:bg-gray-800' : 'border-rose-300 text-rose-500 hover:bg-rose-100'}`}>
@@ -116,12 +116,12 @@ export function TaskBoardView() {
         Doing: mockTasks.filter(t => t.status === 'Doing'),
         Done: mockTasks.filter(t => t.status === 'Done'),
     };
-    
+
     // Fallback/Default color based on theme
     const primaryButtonColor = isDark ? 'bg-teal-600 hover:bg-teal-500' : 'bg-rose-600 hover:bg-rose-500';
 
     return (
-        <div className={`flex-1 overflow-x-auto p-8 transition-colors ${isDark ? 'bg-[#121317]' : 'bg-rose-50'}`}>
+        <div className={`flex-1 overflow-x-auto p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-teal-50'}`}>
             {/* Header Section */}
             <div className="flex items-center justify-between mb-8">
                 <h1 className={`text-3xl font-bold flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -134,7 +134,7 @@ export function TaskBoardView() {
                     </button>
                 </div>
             </div>
-            
+
             {/* Kanban Columns Container */}
             <div className="flex gap-6 overflow-x-auto pb-4">
                 <TaskColumn title="To Do" status="Todo" tasks={tasksByStatus.Todo} isDark={isDark} />
