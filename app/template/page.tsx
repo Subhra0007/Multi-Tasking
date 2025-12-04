@@ -90,7 +90,7 @@ const TemplateCard: React.FC<any> = ({ template, isDark }) => {
 export function TemplateView() {
     const { resolvedTheme } = useTheme();
     const isDark = resolvedTheme === 'dark';
-    const containerBg = isDark ? 'bg-slate-950' : 'bg-teal-50';
+    const containerBg = isDark ? 'bg-[#121317]' : 'bg-rose-50';
     const headerBg = isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100';
 
     return (

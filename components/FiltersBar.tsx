@@ -25,7 +25,7 @@ export default function FiltersBar() {
   return (
     <div className="px-6 py-4 ">
       <div className={`flex items-center justify-between rounded-2xl p-2 border transition-colors duration-300
-        ${isDark ? 'bg-[#0F1014] border-gray-800' : 'bg-white border-rose-200'}`}>
+        ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-200'}`}>
         {/* Left Section */}
         <div className="flex items-center gap-6 pl-2">
           <button className={`flex items-center gap-3 px-4 py-2 rounded-xl transition-colors

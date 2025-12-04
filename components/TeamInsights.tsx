@@ -27,7 +27,7 @@ export default function TeamInsights() {
 
   return (
     <div className={`flex-1 rounded-3xl p-6 border transition-colors duration-300
-      ${isDark ? 'bg-[#0F1014] border-gray-800' : 'bg-white border-rose-200'}`}>
+      ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-200'}`}>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <h3 className={`font-semibold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>Team Insights</h3>

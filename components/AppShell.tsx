@@ -5,9 +5,6 @@ import { useTheme } from 'next-themes';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import CalendarView from '@/components/CalendarView';
-import FiltersBar from '@/components/FiltersBar';
-import LastProjects from '@/components/LastProjects';
-import TeamInsights from '@/components/TeamInsights';
 
 type MenuName = 'dashboard' | 'project-board' | 'task-board' | 'schedule' | 'activities' | 'inbox' | 'template' | 'market-places' | null;
 
@@ -52,16 +49,7 @@ export default function AppShell({
             <>
               <CalendarView view={view} setView={setView} />
 
-              {view !== 'Board' && (
-                <div className="px-6 pb-6 space-y-6">
-                  <FiltersBar />
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <LastProjects />
-                    <TeamInsights />
-                  </div>
-                </div>
-              )}
+              {/* Components moved to DashboardView */}
             </>
           )}
         </div>

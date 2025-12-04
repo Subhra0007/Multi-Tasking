@@ -121,7 +121,7 @@ export function TaskBoardView() {
     const primaryButtonColor = isDark ? 'bg-teal-600 hover:bg-teal-500' : 'bg-rose-600 hover:bg-rose-500';
 
     return (
-        <div className={`flex-1 overflow-x-auto p-8 transition-colors ${isDark ? 'bg-slate-950' : 'bg-teal-50'}`}>
+        <div className={`flex-1 overflow-x-auto p-8 transition-colors ${isDark ? 'bg-[#121317]' : 'bg-rose-50'}`}>
             {/* Header Section */}
             <div className="flex items-center justify-between mb-8">
                 <h1 className={`text-3xl font-bold flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>

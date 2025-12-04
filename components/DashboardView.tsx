@@ -11,19 +11,50 @@ import {
       Clock,
       MoreHorizontal,
       ArrowUpRight,
-      ArrowDownRight
+      ArrowDownRight,
+      MessageSquare,
 } from 'lucide-react';
+
+import FiltersBar from '@/components/FiltersBar';
+import LastProjects from '@/components/LastProjects';
+import TeamInsights from '@/components/TeamInsights';
 
 export default function DashboardView() {
       const { resolvedTheme } = useTheme();
       const isDark = resolvedTheme === 'dark';
 
       // --- Mock Data ---
-      const stats = [
-            { label: 'Total Projects', value: '124', change: '+12%', trend: 'up', icon: Briefcase, color: 'blue' },
-            { label: 'Completed', value: '89', change: '+5%', trend: 'up', icon: CheckCircle2, color: 'green' },
-            { label: 'In Progress', value: '32', change: '-2%', trend: 'down', icon: Clock, color: 'yellow' },
-            { label: 'Team Members', value: '18', change: '+4%', trend: 'up', icon: Users, color: 'purple' },
+      const projects = [
+            {
+                  id: 1,
+                  category: 'Branding',
+                  type: 'Desktop',
+                  title: 'A Huge million number projects',
+                  description: 'Mialba nhoncy mamis fobius lucidos verro justo nec ultricy.',
+                  items: ['About', 'Careers'],
+                  avatars: ['bg-amber-400', 'bg-indigo-500', 'bg-pink-500'],
+                  comments: 2,
+            },
+            {
+                  id: 2,
+                  category: 'Branding',
+                  type: 'Desktop',
+                  title: 'A Huge million number projects',
+                  description: 'Mialba nhoncy mamis fobius lucidos verro justo nec ultricy.',
+                  items: ['About', 'Careers'],
+                  avatars: ['bg-emerald-400', 'bg-sky-500', 'bg-fuchsia-500'],
+                  comments: 2,
+            },
+            {
+                  id: 3,
+                  category: 'Branding',
+                  type: 'Desktop',
+                  title: 'A Huge million number projects',
+                  description: 'Mialba nhoncy mamis fobius lucidos verro justo nec ultricy.',
+                  items: ['About', 'Careers'],
+                  avatars: ['bg-yellow-400', 'bg-purple-500'],
+                  comments: 2,
+            },
       ];
 
       const recentActivity = [
@@ -35,58 +66,233 @@ export default function DashboardView() {
 
       return (
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                 
 
-                  {/* 1. Statistics Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {stats.map((stat, index) => (
-                              <div key={index} className={`p-6 rounded-3xl border transition-all hover:shadow-md
-                        ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100'}`}>
-                                    <div className="flex justify-between items-start mb-4">
-                                          <div className={`p-3 rounded-2xl ${isDark ? `bg-${stat.color}-500/10 text-${stat.color}-400` : `bg-${stat.color}-100 text-${stat.color}-600`}`}>
-                                                <stat.icon size={24} />
+                  {/* 1. Your projects section */}
+                  <div>
+                        <div className="flex items-center justify-between mb-4">
+                              <h2 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                    Your projects
+                              </h2>
+                              <button
+                                    className={`flex items-center gap-1 text-sm font-medium rounded-xl px-3 py-1.5 border transition-colors
+                                    ${isDark ? 'border-gray-800 text-gray-300 hover:bg-gray-900' : 'border-rose-200 text-gray-700 hover:bg-rose-50'}`}
+                              >
+                                    All Projects
+                                    <span className="text-xs">▾</span>
+                              </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {projects.map((project) => (
+                                    <div
+                                          key={project.id}
+                                          className={`rounded-3xl border p-5 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-xl
+                                          ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-rose-50 border-rose-100'}`}
+                                    >
+                                          {/* Top badges */}
+                                          <div className="flex items-start justify-between mb-4">
+                                                <div className="flex gap-2">
+                                                      <span
+                                                            className="px-2.5 py-1 text-[11px] font-semibold rounded-full bg-amber-500/10 text-amber-300"
+                                                      >
+                                                            {project.category}
+                                                      </span>
+                                                      <span
+                                                            className="px-2.5 py-1 text-[11px] font-semibold rounded-full bg-indigo-500/10 text-indigo-300"
+                                                      >
+                                                            {project.type}
+                                                      </span>
+                                                </div>
+                                                <button
+                                                      className={`p-1.5 rounded-full text-gray-500 hover:bg-white/5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}
+                                                >
+                                                      <MoreHorizontal size={16} />
+                                                </button>
                                           </div>
-                                          <div className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full
-                                ${stat.trend === 'up'
-                                                      ? (isDark ? 'bg-green-500/10 text-green-400' : 'bg-green-100 text-green-600')
-                                                      : (isDark ? 'bg-red-500/10 text-red-400' : 'bg-red-100 text-red-600')}`}>
-                                                {stat.trend === 'up' ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-                                                {stat.change}
+
+                                          {/* Title & description */}
+                                          <div className="mb-4">
+                                                <h3
+                                                      className={`text-base font-semibold mb-1 line-clamp-2 ${isDark ? 'text-white' : 'text-gray-900'
+                                                            }`}
+                                                >
+                                                      {project.title}
+                                                </h3>
+                                                <p
+                                                      className={`text-xs leading-relaxed ${isDark ? 'text-gray-500' : 'text-gray-600'
+                                                            }`}
+                                                >
+                                                      {project.description}
+                                                </p>
+                                          </div>
+
+                                          {/* Links list */}
+                                          <div className="mb-4 space-y-1 text-xs">
+                                                {project.items.map((item) => (
+                                                      <div
+                                                            key={item}
+                                                            className={`flex items-center gap-2 ${isDark ? 'text-gray-300' : 'text-gray-800'
+                                                                  }`}
+                                                      >
+                                                            <span className="inline-block w-3 h-3 rounded-full border border-gray-500/40"></span>
+                                                            <span>{item}</span>
+                                                      </div>
+                                                ))}
+                                          </div>
+
+                                          {/* Footer: avatars + comments */}
+                                          <div className="flex items-center justify-between pt-2">
+                                                <div className="flex -space-x-2">
+                                                      {project.avatars.map((cls, idx) => (
+                                                            <div
+                                                                  key={idx}
+                                                                  className={`w-7 h-7 rounded-full border-2 border-slate-900 flex items-center justify-center text-[10px] text-white ${cls}`}
+                                                            >
+                                                                  {/* simple initials dot */}
+                                                            </div>
+                                                      ))}
+                                                </div>
+                                                <div
+                                                      className={`flex items-center gap-1 text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'
+                                                            }`}
+                                                >
+                                                      <MessageSquare size={14} />
+                                                      <span>{project.comments.toString().padStart(2, '0')}</span>
+                                                </div>
                                           </div>
                                     </div>
-                                    <div className={`text-3xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{stat.value}</div>
-                                    <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</div>
-                              </div>
-                        ))}
+                              ))}
+                        </div>
                   </div>
 
                   {/* 2. Charts Section */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                        {/* Weekly Activity (Bar Chart Mockup) */}
-                        <div className={`lg:col-span-2 p-6 rounded-3xl border ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100'}`}>
-                              <div className="flex justify-between items-center mb-8">
-                                    <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Weekly Activity</h3>
-                                    <button className={`p-2 rounded-xl transition-colors ${isDark ? 'hover:bg-gray-800 text-gray-400' : 'hover:bg-gray-100 text-gray-500'}`}>
-                                          <MoreHorizontal size={20} />
-                                    </button>
+                        {/* Track Daily Task Progress (Bar Chart) */}
+                        <div
+                              className={`lg:col-span-2 p-6 rounded-3xl border flex flex-col ${isDark ? 'bg-[#1F2125] border-gray-800' : 'bg-white border-rose-100'
+                                    }`}
+                        >
+                              {/* Header */}
+                              <div className="flex items-start justify-between mb-8">
+                                    <div>
+                                          <h3
+                                                className={`text-lg font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'
+                                                      }`}
+                                          >
+                                                Track Daily Task Progress
+                                          </h3>
+                                          <p
+                                                className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'
+                                                      }`}
+                                          >
+                                                Overview of Daily Task Achievements
+                                          </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                          {/* Legend */}
+                                          <div className="hidden sm:flex items-center gap-3 text-[11px]">
+                                                <div className="flex items-center gap-1">
+                                                      <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+                                                      <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>
+                                                            Task Done
+                                                      </span>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                      <span className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-white' : 'bg-slate-300'}`} />
+                                                      <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>
+                                                            Task Target
+                                                      </span>
+                                                </div>
+                                          </div>
+
+                                          {/* Range selector */}
+                                          <button
+                                                className={`flex items-center gap-1 text-xs font-medium rounded-xl px-3 py-1.5 border transition-colors
+                                                ${isDark
+                                                            ? 'border-gray-800 text-gray-200 bg-[#1F2937] hover:bg-gray-800'
+                                                            : 'border-rose-200 text-gray-700 hover:bg-rose-50'
+                                                      }`}
+                                          >
+                                                Daily
+                                                <span className="text-[10px]">▾</span>
+                                          </button>
+
+                                          <button className={`p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 ${isDark ? 'text-gray-400' : 'text-gray-400'}`}>
+                                                <MoreHorizontal size={18} />
+                                          </button>
+                                    </div>
                               </div>
 
-                              <div className="h-64 flex items-end justify-between gap-4 px-4">
-                                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => {
-                                          const height = Math.floor(Math.random() * 60) + 30; // Random height 30-90%
-                                          return (
-                                                <div key={i} className="flex flex-col items-center gap-3 w-full group cursor-pointer">
-                                                      <div className="w-full relative h-48 flex items-end rounded-t-xl overflow-hidden bg-transparent">
-                                                            <div
-                                                                  style={{ height: `${height}%` }}
-                                                                  className={`w-full rounded-xl transition-all duration-500 group-hover:opacity-80
-                                            ${i === 2 ? 'bg-gradient-to-t from-indigo-600 to-purple-500' : (isDark ? 'bg-gray-800' : 'bg-rose-100')}`}
-                                                            ></div>
-                                                      </div>
-                                                      <span className={`text-xs font-medium ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{day}</span>
+                              {/* Chart */}
+                              <div className="flex-1 relative min-h-[250px]">
+                                    {/* Y-axis grid lines */}
+                                    <div className="absolute inset-0 flex flex-col justify-between text-[10px] pointer-events-none z-0 pb-6">
+                                          {[100, 75, 50, 25, 0].map((val) => (
+                                                <div key={val} className="flex items-center w-full">
+                                                      <span className={`w-6 text-right mr-3 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
+                                                            {val}
+                                                      </span>
+                                                      <div
+                                                            className={`flex-1 border-t ${isDark
+                                                                  ? 'border-gray-800'
+                                                                  : 'border-gray-100'
+                                                                  }`}
+                                                      />
                                                 </div>
-                                          );
-                                    })}
+                                          ))}
+                                    </div>
+
+                                    {/* Vertical Divider */}
+                                    <div className={`absolute top-0 bottom-8 left-[45%] w-px ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
+
+                                    {/* Week Labels */}
+                                    <div className="absolute top-4 left-9 right-0 flex text-xs font-medium text-gray-500">
+                                          <span className="w-[45%] text-center">Week 2</span>
+                                          <span className="w-[55%] text-center">Week 3</span>
+                                    </div>
+
+                                    {/* Bars Container */}
+                                    <div className="absolute inset-0 flex items-end pl-9 pb-0 pt-8">
+                                          {/* Week 2 Group */}
+                                          <div className="w-[45%] flex justify-around items-end px-2">
+                                                {[
+                                                      { day: 'Mon', done: 65, target: 35 },
+                                                      { day: 'Tue', done: 45, target: 60 },
+                                                      { day: 'Fri', done: 45, target: 60 },
+                                                      { day: 'Sat', done: 45, target: 25 },
+                                                ].map((item, idx) => (
+                                                      <div key={idx} className="flex flex-col items-center gap-3 w-full">
+                                                            <div className="flex items-end gap-1 h-40 sm:h-48 relative">
+                                                                  <div style={{ height: `${item.done}%` }} className="w-2 sm:w-3 bg-blue-600 rounded-sm"></div>
+                                                                  <div style={{ height: `${item.target}%` }} className={`w-2 sm:w-3 rounded-sm ${isDark ? 'bg-blue-100/90' : 'bg-slate-300'}`}></div>
+                                                            </div>
+                                                            <span className={`text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{item.day}</span>
+                                                      </div>
+                                                ))}
+                                          </div>
+
+                                          {/* Week 3 Group */}
+                                          <div className="w-[55%] flex justify-around items-end px-2">
+                                                {[
+                                                      { day: 'Sun', done: 60, target: 30 },
+                                                      { day: 'Mon', done: 45, target: 55 },
+                                                      { day: 'Tue', done: 45, target: 70 },
+                                                      { day: 'Wed', done: 45, target: 85 },
+                                                      { day: 'Fri', done: 45, target: 55 },
+                                                ].map((item, idx) => (
+                                                      <div key={idx} className="flex flex-col items-center gap-3 w-full">
+                                                            <div className="flex items-end gap-1 h-40 sm:h-48 relative">
+                                                                  <div style={{ height: `${item.done}%` }} className="w-2 sm:w-3 bg-blue-600 rounded-sm"></div>
+                                                                  <div style={{ height: `${item.target}%` }} className={`w-2 sm:w-3 rounded-sm ${isDark ? 'bg-blue-100/90' : 'bg-slate-300'}`}></div>
+                                                            </div>
+                                                            <span className={`text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{item.day}</span>
+                                                      </div>
+                                                ))}
+                                          </div>
+                                    </div>
                               </div>
                         </div>
 
@@ -182,6 +388,15 @@ export default function DashboardView() {
                                     </tbody>
                               </table>
                         </div>
+                  </div>
+                   {/* Top Section: Filters & Insights */}
+                  <div className="-mx-6 px-6">
+                        <FiltersBar />
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <LastProjects />
+                        <TeamInsights />
                   </div>
             </div>
       );

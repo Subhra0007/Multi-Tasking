@@ -48,7 +48,7 @@ export default function LastProjects() {
 
       {/* Main Card */}
       <div className={`rounded-[32px] p-6 border transition-colors duration-300 shadow-sm 
-        ${isDark ? 'bg-[#0F1014] border-white/5 shadow-none' : 'bg-white border-rose-200'}`}>
+        ${isDark ? 'bg-[#1F2125] border-white/5 shadow-none' : 'bg-white border-rose-200'}`}>
 
         {/* Card Header Info */}
         <div className="flex items-start justify-between mb-8">

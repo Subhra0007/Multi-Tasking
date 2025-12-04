@@ -94,18 +94,23 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [mounted, setMounted] = useState<boolean>(false);
-  const [expandedMenu, setExpandedMenu] = useState<MenuName>(activeMenu === 'project-board' ? 'project-board' : 'task-board');
-  // const [activeMenu, setActiveMenu] = useState<MenuName>('task-board'); // Removed local state 
+  // Auto-expand menu based on current pathname
+  const [expandedMenu, setExpandedMenu] = useState<MenuName>(
+    pathname === '/project-board' ? 'project-board' : pathname === '/task-board' ? 'task-board' : null
+  );
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Update expanded menu when pathname changes
   useEffect(() => {
-    if (activeMenu === 'project-board') {
+    if (pathname === '/project-board') {
       setExpandedMenu('project-board');
+    } else if (pathname === '/task-board') {
+      setExpandedMenu('task-board');
     }
-  }, [activeMenu]);
+  }, [pathname]);
 
   if (!mounted) {
     return null;
@@ -127,9 +132,15 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
 
-  const isDashboardActive = activeMenu === 'dashboard' || view === 'Dashboard';
-  const isProjectBoardActive = activeMenu === 'project-board' || view === 'project-board' || view === 'Board';
-  const isTaskBoardActive = activeMenu === 'task-board' || view === 'task-board' || view === 'Board';
+  // Determine active state based on pathname (most reliable)
+  const isDashboardActive = pathname === '/';
+  const isProjectBoardActive = pathname === '/project-board';
+  const isTaskBoardActive = pathname === '/task-board';
+  const isScheduleActive = pathname === '/schedule';
+  const isActivitiesActive = pathname === '/activities';
+  const isInboxActive = pathname === '/inbox';
+  const isTemplateActive = pathname === '/template';
+  const isMarketPlacesActive = pathname === '/market-places';
 
   // Helper variables for dynamic styles
   const hoverClass: string = isDark ? 'hover:bg-white/5' : 'hover:bg-rose-200/50';
@@ -232,7 +243,6 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="relative cursor-pointer group rounded-xl overflow-hidden"
             onClick={() => {
-              setView('Dashboard');
               navigateTo('/');
             }}
           >
@@ -256,7 +266,6 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="group relative overflow-hidden rounded-xl cursor-pointer"
             onClick={() => {
-              setView('Board');
               navigateTo('/project-board');
             }}
           >
@@ -350,7 +359,6 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="group relative overflow-hidden rounded-xl cursor-pointer"
             onClick={() => {
-              setView('Board');
               navigateTo('/task-board');
             }}
           >
@@ -434,17 +442,16 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
             onClick={() => {
-              setView('schedule');
               navigateTo('/schedule');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${view === 'schedule' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${isScheduleActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${view === 'schedule'
+                ${isScheduleActive
                   ? 'text-white'
                   : textMuted}`}
             >
@@ -452,7 +459,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 <Calendar size={20} />
                 <span className="text-base font-normal">Schedule</span>
               </div>
-              <span className={`text-xs ${view === 'schedule' ? 'text-white/80' : isDark ? 'text-gray-500' : 'text-gray-600'}`}>June, 28, 2023</span>
+              <span className={`text-xs ${isScheduleActive ? 'text-white/80' : isDark ? 'text-gray-500' : 'text-gray-600'}`}>June, 28, 2023</span>
             </div>
           </div>
 
@@ -460,17 +467,16 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
             onClick={() => {
-              setView('activities');
               navigateTo('/activities');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${view === 'activities' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${isActivitiesActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${view === 'activities'
+                ${isActivitiesActive
                   ? 'text-white'
                   : textMuted}`}
             >
@@ -488,17 +494,16 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
             onClick={() => {
-              setView('inbox');
               navigateTo('/inbox');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${view === 'inbox' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${isInboxActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${view === 'inbox'
+                ${isInboxActive
                   ? 'text-white'
                   : textMuted}`}
             >
@@ -511,7 +516,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   <div className={`w-5 h-5 rounded-full bg-purple-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
                   <div className={`w-5 h-5 rounded-full bg-teal-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
                 </div>
-                <span className={`text-[10px] font-bold ${view === 'inbox' ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
+                <span className={`text-[10px] font-bold ${isInboxActive ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
               </div>
             </div>
           </div>
@@ -520,17 +525,16 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
             onClick={() => {
-              setView('template');
               navigateTo('/template');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${view === 'template' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${isTemplateActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${view === 'template'
+                ${isTemplateActive
                   ? 'text-white'
                   : textMuted}`}
             >
@@ -539,7 +543,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 <span className="text-base font-normal">Template</span>
               </div>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
-                ${view === 'template'
+                ${isTemplateActive
                   ? 'bg-white/20 text-white'
                   : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
                 12
@@ -551,17 +555,16 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
           <div
             className="relative cursor-pointer group rounded-lg overflow-hidden"
             onClick={() => {
-              setView('market-places');
               navigateTo('/market-places');
             }}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-r from-teal-600 to-rose-600 transition-opacity duration-200
-                ${view === 'market-places' ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
+                ${isMarketPlacesActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}
             />
             <div
               className={`relative flex items-center justify-between px-4 py-2 transition-colors
-                ${view === 'market-places'
+                ${isMarketPlacesActive
                   ? 'text-white'
                   : textMuted}`}
             >
@@ -570,7 +573,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 <span className="text-base font-normal">Market Places</span>
               </div>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
-                ${view === 'market-places'
+                ${isMarketPlacesActive
                   ? 'bg-white/20 text-white'
                   : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
                 5
