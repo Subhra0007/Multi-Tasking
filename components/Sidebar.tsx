@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { FiChevronsRight } from 'react-icons/fi';
 import {
   ChevronDown,
   LayoutGrid,
@@ -94,6 +96,7 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [mounted, setMounted] = useState<boolean>(false);
+  const [open, setOpen] = useState(true);
   // Auto-expand menu based on current pathname
   const [expandedMenu, setExpandedMenu] = useState<MenuName>(
     pathname === '/project-board' ? 'project-board' : pathname === '/task-board' ? 'task-board' : null
@@ -188,8 +191,14 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
   // ----------------------------------------------------
 
   return (
-    <div className={`w-[300px] h-screen overflow-y-auto flex flex-col transition-colors duration-300 font-sans
-      ${isDark ? 'bg-[#0F1014] text-gray-300' : 'bg-rose-50 text-gray-900'}`}>
+    <motion.nav
+      layout
+      className={`h-screen overflow-y-auto flex flex-col transition-colors duration-300 font-sans shrink-0 relative
+      ${isDark ? 'bg-[#0F1014] text-gray-300' : 'bg-rose-50 text-gray-900'}`}
+      style={{
+        width: open ? "300px" : "fit-content",
+      }}
+    >
 
       {/* 1. User Profile */}
       <div className="p-6 pb-2">
@@ -203,40 +212,57 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
               <div className={`absolute top-0 right-0 w-3 h-3 bg-teal-400 rounded-full border-2 
                 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
             </div>
-            <div>
-              <div className={`font-bold text-lg min-w-[60px] ${isDark ? 'text-white' : 'text-gray-950'}`}>
-                <Typewriter text="Walter" speed={150} />
-              </div>
-              <div className={`text-xs font-bold ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Designer Pro+</div>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.125 }}
+              >
+                <div className={`font-bold text-lg min-w-[60px] ${isDark ? 'text-white' : 'text-gray-950'}`}>
+                  <Typewriter text="Walter" speed={150} />
+                </div>
+                <div className={`text-xs font-bold ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Designer Pro+</div>
+              </motion.div>
+            )}
+          </div>
+          {open && (
+            <div className="flex gap-2">
+              <button className={`p-2 rounded-full transition-colors ${hoverClass}`}>
+                <Plus size={18} className={isDark ? "text-gray-500" : "text-gray-700"} />
+              </button>
+              <button className={`p-2 rounded-full transition-colors ${hoverClass}`}>
+                <Settings size={18} className={isDark ? "text-gray-500" : "text-gray-700"} />
+              </button>
             </div>
-          </div>
-          <div className="flex gap-2">
-            <button className={`p-2 rounded-full transition-colors ${hoverClass}`}>
-              <Plus size={18} className={isDark ? "text-gray-500" : "text-gray-700"} />
-            </button>
-            <button className={`p-2 rounded-full transition-colors ${hoverClass}`}>
-              <Settings size={18} className={isDark ? "text-gray-500" : "text-gray-700"} />
-            </button>
-          </div>
+          )}
         </div>
 
         {/* 2. Search Bar */}
-        <div className="relative group">
-          <Search className={`absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 ${isDark ? 'text-gray-500' : 'text-gray-600'}`} />
-          <input
-            type="text"
-            placeholder="Redesign App"
-            className={`w-full text-sm pl-10 pr-10 py-3 rounded-2xl border transition-all focus:outline-none 
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.125 }}
+            className="relative group"
+          >
+            <Search className={`absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 ${isDark ? 'text-gray-500' : 'text-gray-600'}`} />
+            <input
+              type="text"
+              placeholder="Redesign App"
+              className={`w-full text-sm pl-10 pr-10 py-3 rounded-2xl border transition-all focus:outline-none 
               ${isDark
-                ? 'bg-[#18191d] text-gray-200 border-transparent focus:border-white/10 placeholder:text-gray-600'
-                : 'bg-white text-gray-900 border-rose-100 focus:border-rose-300 placeholder:text-gray-500 shadow-sm'
-              }`}
-          />
-        </div>
+                  ? 'bg-[#18191d] text-gray-200 border-transparent focus:border-white/10 placeholder:text-gray-600'
+                  : 'bg-white text-gray-900 border-rose-100 focus:border-rose-300 placeholder:text-gray-500 shadow-sm'
+                }`}
+            />
+          </motion.div>
+        )}
       </div>
 
       <div className="px-6 py-2">
-        <div className={`text-xs font-bold uppercase tracking-wider mb-3 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Overview</div>
+        {open && (
+          <div className={`text-xs font-bold uppercase tracking-wider mb-3 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Overview</div>
+        )}
 
         <div className="space-y-2">
           {/* Dashboard */}
@@ -256,9 +282,21 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   ? 'text-white'
                   : isDark ? 'text-gray-400' : 'text-gray-700'}`}
             >
-              <LayoutGrid size={20} />
-              <span className="font-medium">Dashboard</span>
-              <div className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+              <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                <LayoutGrid size={20} />
+              </motion.div>
+              {open && (
+                <motion.span
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.125 }}
+                  className="font-medium"
+                >
+                  Dashboard
+                </motion.span>
+              )}
+              {open && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500"></div>}
             </div>
           </div>
 
@@ -279,80 +317,96 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   ? 'text-white'
                   : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <Folder size={20} className={isProjectBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
-              <span className="font-normal">Project Board</span>
-              <ChevronDown
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleMenu('project-board');
-                }}
-                className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'project-board' ? 'rotate-180' : ''}`}
-              />
+              <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                <Folder size={20} className={isProjectBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              </motion.div>
+              {open && (
+                <motion.span
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.125 }}
+                  className="font-normal"
+                >
+                  Project Board
+                </motion.span>
+              )}
+              {open && (
+                <ChevronDown
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleMenu('project-board');
+                  }}
+                  className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'project-board' ? 'rotate-180' : ''}`}
+                />
+              )}
             </div>
           </div>
         </div>
 
         {/* Project Tree Structure - USING RADIX-STYLE WRAPPER */}
-        <RadixMenuWrapper expanded={expandedMenu === 'project-board'} menuName={'project-board'}>
-          <div className={`border-l space-y-1 ${borderClass}`}>
+        {open && (
+          <RadixMenuWrapper expanded={expandedMenu === 'project-board'} menuName={'project-board'}>
+            <div className={`border-l space-y-1 ${borderClass}`}>
 
-            {/* Simple Item */}
-            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer 
+              {/* Simple Item */}
+              <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer 
               ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
-              <div className={`w-3.5 h-3.5 border rounded-[3px] mr-1 ${isDark ? 'border-gray-600' : 'border-gray-500'}`}></div>
-              <span className="text-sm font-medium">Edu Design Landing</span>
-              <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded 
+                <div className={`w-3.5 h-3.5 border rounded-[3px] mr-1 ${isDark ? 'border-gray-600' : 'border-gray-500'}`}></div>
+                <span className="text-sm font-medium">Edu Design Landing</span>
+                <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded 
                 ${isDark ? 'bg-[#1F1818] text-red-400' : 'bg-red-100 text-red-600'}`}>4</span>
-            </div>
-
-            {/* Tree Parent: Team Project */}
-            <div className="relative pt-1">
-              <div className="flex items-center gap-3 pl-6 py-2 text-teal-600 font-bold cursor-pointer">
-                <div className="w-2.5 h-2.5 rounded-full border-2 border-teal-500"></div>
-                <span className="text-sm">Team Project</span>
               </div>
 
-              {/* Tree Children */}
-              <div className="relative ml-6 mt-1 space-y-0">
-                {[
-                  { name: 'Website', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> },
-                  { name: 'Apps', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> },
-                  { name: 'Dribbble Shot', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> }
-                ].map((sub, idx, arr) => (
-                  <div key={idx} className="relative flex items-center pl-6 py-2 group cursor-pointer">
-                    {/* Vertical Line - Darker in light mode */}
-                    {idx !== arr.length - 1 && (
-                      <div className={`absolute left-[3px] top-0 h-full w-[1px] ${isDark ? 'bg-gray-700' : 'bg-gray-400'}`}></div>
-                    )}
-                    {/* Curved Connector - Darker in light mode */}
-                    <div className={`absolute left-[3px] top-0 w-4 h-[50%] border-b border-l rounded-bl-lg ${isDark ? 'border-gray-700' : 'border-gray-400'}`}></div>
+              {/* Tree Parent: Team Project */}
+              <div className="relative pt-1">
+                <div className="flex items-center gap-3 pl-6 py-2 text-teal-600 font-bold cursor-pointer">
+                  <div className="w-2.5 h-2.5 rounded-full border-2 border-teal-500"></div>
+                  <span className="text-sm">Team Project</span>
+                </div>
 
-                    <span className={`text-sm font-medium transition-colors ${isDark ? 'text-gray-500 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-900'}`}>{sub.name}</span>
-                  </div>
-                ))}
+                {/* Tree Children */}
+                <div className="relative ml-6 mt-1 space-y-0">
+                  {[
+                    { name: 'Website', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> },
+                    { name: 'Apps', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> },
+                    { name: 'Dribbble Shot', icon: <div className="w-1.5 h-1.5 rounded-full bg-gray-500"></div> }
+                  ].map((sub, idx, arr) => (
+                    <div key={idx} className="relative flex items-center pl-6 py-2 group cursor-pointer">
+                      {/* Vertical Line - Darker in light mode */}
+                      {idx !== arr.length - 1 && (
+                        <div className={`absolute left-[3px] top-0 h-full w-[1px] ${isDark ? 'bg-gray-700' : 'bg-gray-400'}`}></div>
+                      )}
+                      {/* Curved Connector - Darker in light mode */}
+                      <div className={`absolute left-[3px] top-0 w-4 h-[50%] border-b border-l rounded-bl-lg ${isDark ? 'border-gray-700' : 'border-gray-400'}`}></div>
+
+                      <span className={`text-sm font-medium transition-colors ${isDark ? 'text-gray-500 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-900'}`}>{sub.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tripple Website */}
+              <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
+                <Triangle size={10} className="text-emerald-500 fill-emerald-500 rotate-180" />
+                <span className="text-sm font-medium">Tripple Website</span>
+              </div>
+
+              {/* Social App */}
+              <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
+                <div className="w-2.5 h-2.5 rounded-full border-2 border-amber-500"></div>
+                <span className="text-sm font-medium">Social App</span>
+                <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>3</span>
+              </div>
+
+              {/* Create New Board */}
+              <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 text-teal-600 ${isDark ? 'text-teal-600 hover:text-teal-500' : 'text-teal-600 hover:text-teal-800'}`}>
+                <Plus size={16} />
+                <span className="text-sm font-bold">Create New Board</span>
               </div>
             </div>
-
-            {/* Tripple Website */}
-            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
-              <Triangle size={10} className="text-emerald-500 fill-emerald-500 rotate-180" />
-              <span className="text-sm font-medium">Tripple Website</span>
-            </div>
-
-            {/* Social App */}
-            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
-              <div className="w-2.5 h-2.5 rounded-full border-2 border-amber-500"></div>
-              <span className="text-sm font-medium">Social App</span>
-              <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>3</span>
-            </div>
-
-            {/* Create New Board */}
-            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 text-teal-600 ${isDark ? 'text-teal-600 hover:text-teal-500' : 'text-teal-600 hover:text-teal-800'}`}>
-              <Plus size={16} />
-              <span className="text-sm font-bold">Create New Board</span>
-            </div>
-          </div>
-        </RadixMenuWrapper>
+          </RadixMenuWrapper>
+        )}
 
         <div className="space-y-2"> {/* Continued space-y-2 for consistent gap */}
           {/* Task Board */}
@@ -372,69 +426,85 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   ? 'text-white'
                   : isDark ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              <FileText size={20} className={isTaskBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
-              <span className="font-normal">Task Board</span>
-              <ChevronDown
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleMenu('task-board');
-                }}
-                className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'task-board' ? 'rotate-180' : ''}`}
-              />
+              <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                <FileText size={20} className={isTaskBoardActive ? 'text-white' : isDark ? 'text-gray-400' : 'text-gray-700'} />
+              </motion.div>
+              {open && (
+                <motion.span
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.125 }}
+                  className="font-normal"
+                >
+                  Task Board
+                </motion.span>
+              )}
+              {open && (
+                <ChevronDown
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleMenu('task-board');
+                  }}
+                  className={`ml-auto h-4 w-4 transition-transform duration-300 ${expandedMenu === 'task-board' ? 'rotate-180' : ''}`}
+                />
+              )}
             </div>
           </div>
         </div>
 
         {/* Task Board Structure - USING RADIX-STYLE WRAPPER */}
-        <RadixMenuWrapper expanded={expandedMenu === 'task-board'} menuName={'task-board'}>
-          <div className={`border-l space-y-1 ${borderClass}`}>
+        {open && (
+          <RadixMenuWrapper expanded={expandedMenu === 'task-board'} menuName={'task-board'}>
+            <div className={`border-l space-y-1 ${borderClass}`}>
 
-            {taskBoardSubMenus.map((item) => (
-              <div key={item.name}>
-                <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
-                  {/* Custom icon from the map, styled similarly to the dots */}
-                  <div className="w-2.5 h-2.5 flex items-center justify-center">
-                    {item.icon}
+              {taskBoardSubMenus.map((item) => (
+                <div key={item.name}>
+                  <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-700 hover:text-black'}`}>
+                    {/* Custom icon from the map, styled similarly to the dots */}
+                    <div className="w-2.5 h-2.5 flex items-center justify-center">
+                      {item.icon}
+                    </div>
+
+                    <span className="text-sm font-medium">{item.name}</span>
+
+                    {/* Count badge, only render if count exists */}
+                    {item.count && (
+                      <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>
+                        {item.count}
+                      </span>
+                    )}
                   </div>
 
-                  <span className="text-sm font-medium">{item.name}</span>
+                  {/* Submenus rendering */}
+                  {item.subItems && (
+                    <div className="relative ml-6 mt-1 space-y-0">
+                      {item.subItems.map((sub, idx, arr) => (
+                        <div key={idx} className="relative flex items-center pl-6 py-2 group cursor-pointer">
+                          {/* Vertical Line - Darker in light mode */}
+                          {idx !== arr.length - 1 && (
+                            <div className={`absolute left-[3px] top-0 h-full w-[1px] ${isDark ? 'bg-gray-700' : 'bg-gray-400'}`}></div>
+                          )}
+                          {/* Curved Connector - Darker in light mode */}
+                          <div className={`absolute left-[3px] top-0 w-4 h-[50%] border-b border-l rounded-bl-lg ${isDark ? 'border-gray-700' : 'border-gray-400'}`}></div>
 
-                  {/* Count badge, only render if count exists */}
-                  {item.count && (
-                    <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${isDark ? 'bg-[#1d1f18] text-amber-500' : 'bg-amber-100 text-amber-700'}`}>
-                      {item.count}
-                    </span>
+                          <span className={`text-sm font-medium transition-colors ${isDark ? 'text-gray-500 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-900'}`}>{sub.name}</span>
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </div>
+              ))}
 
-                {/* Submenus rendering */}
-                {item.subItems && (
-                  <div className="relative ml-6 mt-1 space-y-0">
-                    {item.subItems.map((sub, idx, arr) => (
-                      <div key={idx} className="relative flex items-center pl-6 py-2 group cursor-pointer">
-                        {/* Vertical Line - Darker in light mode */}
-                        {idx !== arr.length - 1 && (
-                          <div className={`absolute left-[3px] top-0 h-full w-[1px] ${isDark ? 'bg-gray-700' : 'bg-gray-400'}`}></div>
-                        )}
-                        {/* Curved Connector - Darker in light mode */}
-                        <div className={`absolute left-[3px] top-0 w-4 h-[50%] border-b border-l rounded-bl-lg ${isDark ? 'border-gray-700' : 'border-gray-400'}`}></div>
-
-                        <span className={`text-sm font-medium transition-colors ${isDark ? 'text-gray-500 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-900'}`}>{sub.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+              {/* Create new Task Board */}
+              <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 text-teal-600 ${isDark ? 'text-teal-600 hover:text-teal-500' : 'text-teal-600 hover:text-teal-800'}`}>
+                <Plus size={16} />
+                <span className="text-sm font-bold">Create new Task Board</span>
               </div>
-            ))}
 
-            {/* Create new Task Board */}
-            <div className={`relative group flex items-center gap-3 pl-6 py-2 cursor-pointer mt-1 text-teal-600 ${isDark ? 'text-teal-600 hover:text-teal-500' : 'text-teal-600 hover:text-teal-800'}`}>
-              <Plus size={16} />
-              <span className="text-sm font-bold">Create new Task Board</span>
             </div>
-
-          </div>
-        </RadixMenuWrapper>
+          </RadixMenuWrapper>
+        )}
 
         {/* Schedule, Activities, Inbox, Template, Market Places */}
         <div className="space-y-2"> {/* space-y-1 -> space-y-2 for consistent gap */}
@@ -456,10 +526,22 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Calendar size={20} />
-                <span className="text-base font-normal">Schedule</span>
+                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                  <Calendar size={20} />
+                </motion.div>
+                {open && (
+                  <motion.span
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.125 }}
+                    className="text-base font-normal"
+                  >
+                    Schedule
+                  </motion.span>
+                )}
               </div>
-              <span className={`text-xs ${isScheduleActive ? 'text-white/80' : isDark ? 'text-gray-500' : 'text-gray-600'}`}>June, 28, 2023</span>
+              {open && <span className={`text-xs ${isScheduleActive ? 'text-white/80' : isDark ? 'text-gray-500' : 'text-gray-600'}`}>June, 28, 2023</span>}
             </div>
           </div>
 
@@ -481,12 +563,26 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Activity size={20} />
-                <span className="text-base font-normal">Activities</span>
+                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                  <Activity size={20} />
+                </motion.div>
+                {open && (
+                  <motion.span
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.125 }}
+                    className="text-base font-normal"
+                  >
+                    Activities
+                  </motion.span>
+                )}
               </div>
-              <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-100 px-2 py-0.5 rounded">
-                New
-              </span>
+              {open && (
+                <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-100 px-2 py-0.5 rounded">
+                  New
+                </span>
+              )}
             </div>
           </div>
 
@@ -508,16 +604,30 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Inbox size={20} />
-                <span className="text-base font-normal">Inbox</span>
+                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                  <Inbox size={20} />
+                </motion.div>
+                {open && (
+                  <motion.span
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.125 }}
+                    className="text-base font-normal"
+                  >
+                    Inbox
+                  </motion.span>
+                )}
               </div>
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  <div className={`w-5 h-5 rounded-full bg-purple-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
-                  <div className={`w-5 h-5 rounded-full bg-teal-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
+              {open && (
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <div className={`w-5 h-5 rounded-full bg-purple-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
+                    <div className={`w-5 h-5 rounded-full bg-teal-500 border-2 ${isDark ? 'border-[#0F1014]' : 'border-rose-50'}`}></div>
+                  </div>
+                  <span className={`text-[10px] font-bold ${isInboxActive ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
                 </div>
-                <span className={`text-[10px] font-bold ${isInboxActive ? 'text-white' : isDark ? 'text-gray-500' : 'text-gray-700'}`}>24</span>
-              </div>
+              )}
             </div>
           </div>
 
@@ -539,15 +649,29 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Layout size={20} />
-                <span className="text-base font-normal">Template</span>
+                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                  <Layout size={20} />
+                </motion.div>
+                {open && (
+                  <motion.span
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.125 }}
+                    className="text-base font-normal"
+                  >
+                    Template
+                  </motion.span>
+                )}
               </div>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
+              {open && (
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
                 ${isTemplateActive
-                  ? 'bg-white/20 text-white'
-                  : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
-                12
-              </span>
+                    ? 'bg-white/20 text-white'
+                    : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                  12
+                </span>
+              )}
             </div>
           </div>
 
@@ -569,15 +693,29 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                   : textMuted}`}
             >
               <div className="flex items-center gap-3">
-                <Store size={20} />
-                <span className="text-base font-normal">Market Places</span>
+                <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+                  <Store size={20} />
+                </motion.div>
+                {open && (
+                  <motion.span
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.125 }}
+                    className="text-base font-normal"
+                  >
+                    Market Places
+                  </motion.span>
+                )}
               </div>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
+              {open && (
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full
                 ${isMarketPlacesActive
-                  ? 'bg-white/20 text-white'
-                  : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
-                5
-              </span>
+                    ? 'bg-white/20 text-white'
+                    : isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                  5
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -585,50 +723,84 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
 
       {/* 3. Bottom Card */}
       <div className="mt-auto p-6">
-        <div className={`text-[10px] font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Onboarding</div>
+        {open && (
+          <>
+            <div className={`text-[10px] font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Onboarding</div>
 
-        {/* Onboarding Icons Row & THEME SWITCHER */}
-        <div className={`flex justify-between items-center p-2 rounded-2xl mb-4 transition-colors
+            {/* Onboarding Icons Row & THEME SWITCHER */}
+            <div className={`flex justify-between items-center p-2 rounded-2xl mb-4 transition-colors
           ${isDark ? 'bg-[#15161a]' : 'bg-white border border-rose-200 shadow-sm'}`}>
-          <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><FileText size={18} /></button>
-          <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><LinkIcon size={18} /></button>
-          <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><Wallet size={18} /></button>
-          <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><Bookmark size={18} /></button>
+              <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><FileText size={18} /></button>
+              <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><LinkIcon size={18} /></button>
+              <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><Wallet size={18} /></button>
+              <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><Bookmark size={18} /></button>
 
-          <div className={`h-6 w-[1px] mx-1 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
+              <div className={`h-6 w-[1px] mx-1 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
 
-          {/* THEME TOGGLE */}
-          <div className={`flex items-center rounded-full p-1 border transition-colors 
+              {/* THEME TOGGLE */}
+              <div className={`flex items-center rounded-full p-1 border transition-colors 
             ${isDark ? 'bg-black/40 border-gray-800' : 'bg-gray-100 border-rose-200'}`}>
-            <button
-              onClick={() => setGlobalTheme(false)}
-              className={`p-1.5 rounded-full transition-all duration-300 ${!isDark ? 'bg-white text-amber-500 shadow-sm' : 'text-gray-600 hover:text-gray-400'}`}
-            >
-              <Sun size={14} />
-            </button>
-            <button
-              onClick={() => setGlobalTheme(true)}
-              className={`p-1.5 rounded-full transition-all duration-300 ${isDark ? 'bg-[#2c2d31] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-            >
-              <Moon size={14} />
-            </button>
-          </div>
-        </div>
+                <button
+                  onClick={() => setGlobalTheme(false)}
+                  className={`p-1.5 rounded-full transition-all duration-300 ${!isDark ? 'bg-white text-amber-500 shadow-sm' : 'text-gray-600 hover:text-gray-400'}`}
+                >
+                  <Sun size={14} />
+                </button>
+                <button
+                  onClick={() => setGlobalTheme(true)}
+                  className={`p-1.5 rounded-full transition-all duration-300 ${isDark ? 'bg-[#2c2d31] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                  <Moon size={14} />
+                </button>
+              </div>
+            </div>
 
-        {/* Add New Project Card */}
-        <div className={`relative border border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors 
+            {/* Add New Project Card */}
+            <div className={`relative border border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors 
           ${isDark
-            ? 'border-gray-700 bg-gradient-to-b from-white/5 to-transparent hover:border-gray-500'
-            : 'border-rose-300 bg-white hover:border-rose-400 hover:bg-rose-50/50'
-          }`}>
-          <div className="w-12 h-12 bg-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 text-white shadow-lg shadow-indigo-500/20">
-            <Plus size={24} />
-          </div>
-          <h3 className={`font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Add New Project</h3>
-          <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Or use <span className="text-indigo-500 font-bold hover:underline">invite link</span></p>
-        </div>
+                ? 'border-gray-700 bg-gradient-to-b from-white/5 to-transparent hover:border-gray-500'
+                : 'border-rose-300 bg-white hover:border-rose-400 hover:bg-rose-50/50'
+              }`}>
+              <div className="w-12 h-12 bg-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 text-white shadow-lg shadow-indigo-500/20">
+                <Plus size={24} />
+              </div>
+              <h3 className={`font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Add New Project</h3>
+              <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Or use <span className="text-indigo-500 font-bold hover:underline">invite link</span></p>
+            </div>
+          </>
+        )}
       </div>
 
-    </div >
+      {/* Toggle Close Button */}
+      <motion.button
+        layout
+        onClick={() => setOpen((pv) => !pv)}
+        className={`absolute bottom-0 left-0 right-0 border-t transition-colors hover:bg-slate-100 dark:hover:bg-white/5
+          ${isDark ? 'border-gray-800' : 'border-rose-200'}`}
+      >
+        <div className="flex items-center p-2">
+          <motion.div
+            layout
+            className="grid size-10 place-content-center text-lg"
+          >
+            <FiChevronsRight
+              className={`transition-transform ${open && "rotate-180"}`}
+            />
+          </motion.div>
+          {open && (
+            <motion.span
+              layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.125 }}
+              className="text-xs font-medium"
+            >
+              Hide
+            </motion.span>
+          )}
+        </div>
+      </motion.button>
+
+    </motion.nav >
   );
 }
