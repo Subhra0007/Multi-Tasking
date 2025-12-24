@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import Modal from './Modal';
 import { FiChevronsRight } from 'react-icons/fi';
 import {
   ChevronDown,
@@ -101,6 +102,8 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
   const [expandedMenu, setExpandedMenu] = useState<MenuName>(
     pathname === '/project-board' ? 'project-board' : pathname === '/task-board' ? 'task-board' : null
   );
+  const [modalData, setModalData] = useState<{ isOpen: boolean; title: string; content: React.ReactNode } | null>(null);
+  const [showProjectTypes, setShowProjectTypes] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -221,10 +224,81 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
             </div>
             {open && (
               <div className="flex gap-2">
-                <button className={`p-2 rounded-full ${hoverClass}`}>
+                <button
+                  onClick={() => setModalData({
+                    isOpen: true,
+                    title: 'Invite New Member',
+                    content: (
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <label className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Email Address</label>
+                          <input
+                            type="email"
+                            placeholder="colleague@synergy.io"
+                            className={`w-full p-4 rounded-2xl border outline-none transition-all ${isDark ? 'bg-white/5 border-white/10 focus:border-teal-500' : 'bg-rose-50 border-rose-100 focus:border-rose-300'}`}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Role Assignment</label>
+                          <div className="grid grid-cols-3 gap-2">
+                            {['Admin', 'Moderator', 'Editor'].map((role) => (
+                              <button key={role} className={`py-3 rounded-xl border text-[10px] font-bold uppercase tracking-wider transition-all ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-rose-100 hover:bg-rose-50'}`}>
+                                {role}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        <button className="w-full py-4 bg-teal-500 text-white font-black rounded-2xl shadow-xl shadow-teal-500/20 active:scale-95 transition-all">
+                          GENERATE INVITE
+                        </button>
+                      </div>
+                    )
+                  })}
+                  className={`p-2 rounded-full ${hoverClass}`}
+                >
                   <Plus size={18} className={isDark ? "text-gray-500" : "text-gray-700"} />
                 </button>
-                <button className={`p-2 rounded-full ${hoverClass}`}>
+                <button
+                  onClick={() => setModalData({
+                    isOpen: true,
+                    title: 'Workspace Settings',
+                    content: (
+                      <div className="space-y-8">
+                        <div className="space-y-4">
+                          <div className={`p-4 rounded-2xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/10' : 'bg-rose-50 border-rose-100'}`}>
+                            <div>
+                              <div className="font-bold text-sm">Automated Sync</div>
+                              <div className="text-[10px] text-gray-500 uppercase">Real-time cluster heartbeat</div>
+                            </div>
+                            <div className="w-10 h-5 bg-teal-500 rounded-full relative p-1 cursor-pointer">
+                              <div className="w-3 h-3 bg-white rounded-full ml-auto"></div>
+                            </div>
+                          </div>
+                          <div className={`p-4 rounded-2xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/10' : 'bg-rose-50 border-rose-100'}`}>
+                            <div>
+                              <div className="font-bold text-sm">UI Hardening</div>
+                              <div className="text-[10px] text-gray-500 uppercase">Glassmorphic occlusion depth</div>
+                            </div>
+                            <div className="w-10 h-5 bg-gray-600 rounded-full relative p-1 cursor-pointer">
+                              <div className="w-3 h-3 bg-white rounded-full"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Theme Architecture</div>
+                          <div className="flex gap-4">
+                            {['Neon Dark', 'Liquid Light', 'Cyber Amber'].map((preset) => (
+                              <div key={preset} className={`flex-1 p-3 rounded-xl border text-[8px] font-bold text-center cursor-pointer transition-all ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-rose-100 hover:bg-rose-50'}`}>
+                                {preset}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  className={`p-2 rounded-full ${hoverClass}`}
+                >
                   <Settings size={18} className={isDark ? "text-gray-500" : "text-gray-700"} />
                 </button>
               </div>
@@ -695,21 +769,127 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
               <div className={`text-[10px] font-bold uppercase tracking-wider mb-4 ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Onboarding</div>
 
               {/* Onboarding Icons Row & THEME SWITCHER */}
-              <div className={`flex justify-between items-center p-2 rounded-2xl mb-4
-          ${isDark ? 'bg-[#15161a]' : 'bg-white border border-rose-200 shadow-sm'}`}>
-                <button className={`p-2 ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><FileText size={18} /></button>
-                <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><LinkIcon size={18} /></button>
-                <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><Wallet size={18} /></button>
-                <button className={`p-2 transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}><Bookmark size={18} /></button>
+              <div className={`flex justify-between items-center p-2 rounded-2xl mb-2
+                ${isDark ? 'bg-[#15161a]' : 'bg-white border border-rose-200 shadow-sm'}`}>
 
-                <div className={`h-6 w-[1px] mx-1 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setModalData({
+                      isOpen: true,
+                      title: 'Recently Optimized Templates',
+                      content: (
+                        <div className="space-y-4">
+                          {[
+                            { name: 'Neon Brand Kit', type: 'Design', performance: '+24%' },
+                            { name: 'API Cluster Hub', type: 'Dev', performance: '+18%' },
+                            { name: 'Mesh Sharding', type: 'Infra', performance: '+32%' },
+                          ].map((item, i) => (
+                            <div key={i} className={`p-4 rounded-2xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/10' : 'bg-rose-50 border-rose-100'}`}>
+                              <div>
+                                <div className="font-bold text-sm">{item.name}</div>
+                                <div className="text-[10px] text-gray-500 uppercase tracking-widest">{item.type}</div>
+                              </div>
+                              <div className="text-teal-500 font-bold text-sm">{item.performance}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })}
+                    className={`p-2 transition-all hover:scale-110 active:scale-95 ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}
+                  >
+                    <FileText size={18} />
+                  </button>
+                  <button
+                    onClick={() => setModalData({
+                      isOpen: true,
+                      title: 'Active Sync Status',
+                      content: (
+                        <div className="space-y-4">
+                          {[
+                            { name: 'GitHub Integration', status: 'Synced', time: '2m ago' },
+                            { name: 'Vercel Deployment', status: 'Live', time: '14m ago' },
+                            { name: 'Database Replication', status: 'Active', time: '4m ago' },
+                          ].map((item, i) => (
+                            <div key={i} className={`p-4 rounded-2xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/10' : 'bg-rose-50 border-rose-100'}`}>
+                              <div>
+                                <div className="font-bold text-sm">{item.name}</div>
+                                <div className="text-[10px] text-gray-500 uppercase tracking-widest">{item.time}</div>
+                              </div>
+                              <div className="px-3 py-1 rounded-full bg-teal-500/10 text-teal-500 text-[10px] font-bold uppercase">{item.status}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })}
+                    className={`p-2 transition-all hover:scale-110 active:scale-95 ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}
+                  >
+                    <LinkIcon size={18} />
+                  </button>
+                  <button
+                    onClick={() => setModalData({
+                      isOpen: true,
+                      title: 'Focus Token Wallet',
+                      content: (
+                        <div className="space-y-6">
+                          <div className={`p-8 rounded-[32px] text-center border-2 border-dashed ${isDark ? 'bg-teal-500/5 border-teal-500/20' : 'bg-teal-50 border-teal-200'}`}>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-[0.2em] mb-2 font-bold">Total Balance</div>
+                            <div className="text-4xl font-black text-teal-500">1,250 FT</div>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Recent Gains</div>
+                            {[
+                              { event: 'Multi-tasking Streak', amount: '+50 FT' },
+                              { event: 'Project Milestone', amount: '+200 FT' },
+                            ].map((gain, i) => (
+                              <div key={i} className="flex items-center justify-between text-xs pb-2 border-b border-gray-100 dark:border-gray-800">
+                                <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>{gain.event}</span>
+                                <span className="font-bold text-teal-500">{gain.amount}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    })}
+                    className={`p-2 transition-all hover:scale-110 active:scale-95 ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}
+                  >
+                    <Wallet size={18} />
+                  </button>
+                  <button
+                    onClick={() => setModalData({
+                      isOpen: true,
+                      title: 'Multitasking Flow Presets',
+                      content: (
+                        <div className="grid grid-cols-2 gap-4">
+                          {[
+                            { name: 'Morning Burst', icon: <Sun size={14} />, color: 'bg-amber-500' },
+                            { name: 'Night Owl', icon: <Moon size={14} />, color: 'bg-indigo-500' },
+                            { name: 'Hyper Focus', icon: <LayoutGrid size={14} />, color: 'bg-teal-500' },
+                            { name: 'Tea Break', icon: <Calendar size={14} />, color: 'bg-pink-500' },
+                          ].map((flow, i) => (
+                            <div key={i} className={`p-4 rounded-2xl border cursor-pointer hover:scale-[1.02] transition-all ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-rose-100 shadow-sm'}`}>
+                              <div className={`w-8 h-8 rounded-full ${flow.color} flex items-center justify-center text-white mb-3`}>
+                                {flow.icon}
+                              </div>
+                              <div className="font-bold text-xs">{flow.name}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })}
+                    className={`p-2 transition-all hover:scale-110 active:scale-95 ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}
+                  >
+                    <Bookmark size={18} />
+                  </button>
+                </div>
 
-                {/* THEME TOGGLE */}
-                <div className={`flex items-center rounded-full p-1 border 
-            ${isDark ? 'bg-black/40 border-gray-800' : 'bg-gray-100 border-rose-200'}`}>
+                <div className={`h-8 w-[1px] mx-1 ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
+
+                {/* THEME TOGGLE (PILL STYLE) */}
+                <div className={`flex items-center rounded-full p-1 border transition-all duration-300
+                  ${isDark ? 'bg-black/40 border-gray-800' : 'bg-gray-100 border-rose-200'}`}>
                   <button
                     onClick={() => setGlobalTheme(false)}
-                    className={`p-1.5 rounded-full ${!isDark ? 'bg-white text-amber-500 shadow-sm' : 'text-gray-600 hover:text-gray-400'}`}
+                    className={`p-1.5 rounded-full transition-all duration-300 ${!isDark ? 'bg-white text-amber-500 shadow-sm' : 'text-gray-600 hover:text-gray-400'}`}
                   >
                     <Sun size={14} />
                   </button>
@@ -722,17 +902,73 @@ export default function Sidebar({ view, setView, activeMenu }: SidebarProps) {
                 </div>
               </div>
 
-              {/* Add New Project Card */}
-              <div className={`relative border border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors 
-          ${isDark
-                  ? 'border-gray-700 bg-gradient-to-b from-white/5 to-transparent hover:border-gray-500'
-                  : 'border-rose-300 bg-white hover:border-rose-400 hover:bg-rose-50/50'
-                }`}>
-                <div className="w-12 h-12 bg-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 text-white shadow-lg shadow-indigo-500/20">
-                  <Plus size={24} />
-                </div>
-                <h3 className={`font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Add New Project</h3>
-                <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Or use <span className="text-indigo-500 font-bold hover:underline">invite link</span></p>
+              {/* Modal Display Area */}
+              {modalData && (
+                <Modal
+                  isOpen={modalData.isOpen}
+                  onClose={() => setModalData(null)}
+                  title={modalData.title}
+                  isDark={isDark}
+                >
+                  {modalData.content}
+                </Modal>
+              )}
+
+              {/* Add New Project Card / Options */}
+              <div className="relative min-h-[140px]">
+                <AnimatePresence mode="wait">
+                  {!showProjectTypes ? (
+                    <motion.div
+                      key="add-card"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      onClick={() => setShowProjectTypes(true)}
+                      className={`h-full border border-dashed rounded-[32px] p-6 text-center cursor-pointer transition-all group active:scale-[0.98]
+                        ${isDark
+                          ? 'border-gray-800 bg-[#121418] hover:border-gray-600 hover:bg-[#15171c]'
+                          : 'border-rose-200 bg-white hover:border-rose-300 hover:bg-rose-50/50'
+                        }`}
+                    >
+                      <div className="w-12 h-12 bg-[#ff0044] rounded-full flex items-center justify-center mx-auto mb-3 text-white shadow-[0_0_15px_rgba(255,0,68,0.2)] group-hover:scale-110 transition-transform">
+                        <Plus size={24} />
+                      </div>
+                      <h3 className={`text-base font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>Add New Project</h3>
+                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
+                        Or use <span className="text-[#3b82f6] font-bold hover:underline">invite link</span>
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="project-options"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className={`h-full border rounded-[32px] p-4 flex flex-col gap-2
+                        ${isDark ? 'bg-[#1a1c22] border-gray-800' : 'bg-white border-rose-100 shadow-sm'}`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>Select Type</span>
+                        <button onClick={() => setShowProjectTypes(false)} className="text-gray-500 hover:text-gray-300">
+                          <Plus size={14} className="rotate-45" />
+                        </button>
+                      </div>
+                      {['Marketing Campaign', 'System Refactor', 'New Product'].map((type) => (
+                        <button
+                          key={type}
+                          onClick={() => {
+                            alert(`Starting: ${type}`);
+                            setShowProjectTypes(false);
+                          }}
+                          className={`w-full py-2 px-3 rounded-xl text-left text-xs font-bold transition-all
+                            ${isDark ? 'hover:bg-gray-800 text-gray-300 hover:text-white' : 'hover:bg-rose-50 text-gray-700 hover:text-black'}`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </>
           )}
